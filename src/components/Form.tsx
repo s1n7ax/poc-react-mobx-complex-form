@@ -1,40 +1,34 @@
 "use client";
 
-import { Step, StepLabel, Stepper } from "@mui/material";
+import { ComponentType, formStore } from "@/lib/store/formStore";
+import { ReactNode, useRef } from "react";
+import Stepper, { StepperData } from "./Stepper";
+import { observer } from "mobx-react-lite";
 
-const steps = ["form one", "form two", "form three"];
+export interface FormProps {
+  data: StepperData;
+}
 
-const Form = () => {
-  return (
-    <div>
-      <Stepper activeStep={1} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <Items />
-    </div>
-  );
-};
+const Form = observer(({ data }: FormProps) => {
+  console.log("rendering::Form");
+  const hasLoadedData = useRef<boolean>(false);
+
+  if (!hasLoadedData.current) {
+    formStore.form = data;
+    hasLoadedData.current = true;
+  }
+
+  let FormComponent: ReactNode;
+
+  if (!formStore.form) {
+    return <p>loading</p>;
+  }
+
+  if (formStore.form.type === ComponentType.Stepper) {
+    FormComponent = <Stepper stepper={formStore.form} />;
+  }
+
+  return <form>{FormComponent}</form>;
+});
 
 export default Form;
-
-const Items = () => {
-  return (
-    <Stepper activeStep={1} alternativeLabel>
-      {steps.map((label) => (
-        <Item key={label} label={label} />
-      ))}
-    </Stepper>
-  );
-};
-
-const Item = ({ label }: { label: string }) => {
-  return (
-    <Step key={label}>
-      <StepLabel>{label}</StepLabel>
-    </Step>
-  );
-};
