@@ -5,6 +5,7 @@ export enum ComponentType {
   Stepper,
   Step,
   TextField,
+  Slider,
 }
 
 export const formStore = observable.object<{ form: StepperData | null }>({

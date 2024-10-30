@@ -5,7 +5,7 @@ import { ComponentType } from "@/lib/store/formStore";
 import { runInAction } from "mobx";
 
 export interface TextFieldValidationData {
-  min: {
+  min?: {
     value: number;
     message: string;
   };
@@ -21,7 +21,7 @@ export interface TextFieldData {
   label: string;
   placeholder: string;
   value: string;
-  errors: string | null;
+  error: string | null;
   validations: TextFieldValidationData;
 }
 
@@ -31,30 +31,26 @@ export interface TextFieldProps {
 
 const TextField = observer(({ textFieldData }: TextFieldProps) => {
   console.log("rendering::TextField");
+  const v = textFieldData.validations;
 
   const validateData = (value: string) => {
-    if (textFieldData.validations.max) {
-      if (value.length > textFieldData.validations.max.value) {
-        runInAction(() => {
-          textFieldData.errors = textFieldData.validations.max.message;
-        });
-      } else if (value.length < textFieldData.validations.min.value) {
-        runInAction(() => {
-          textFieldData.errors = textFieldData.validations.min.message;
-        });
-      } else {
-        runInAction(() => {
-          textFieldData.errors = "";
-        });
-      }
-    }
+    let message: string | null;
+
+    if (value.length > v.max.value) message = v.max.message;
+    else if (v.min && value.length < v.min.value) message = v.min.message;
+    else message = null;
+
+    runInAction(() => {
+      textFieldData.error = message;
+    });
   };
 
   return (
     <MuiTextField
-      error={textFieldData.errors.length > 0}
+      error={!!textFieldData.error}
+      required={!!textFieldData.validations.min}
       label={textFieldData.label}
-      helperText={textFieldData.errors?.[0]}
+      helperText={textFieldData.error}
       placeholder={textFieldData.placeholder}
       onChange={(ev) => {
         const value = ev.target.value;

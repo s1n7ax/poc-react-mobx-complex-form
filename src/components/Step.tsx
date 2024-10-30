@@ -17,7 +17,7 @@ export interface StepProps {
 
 const Step = observer(({ step }: StepProps) => {
   console.log("rendering::Step");
-  const hasErrors = step.components.some((c) => c.errors.length > 0);
+  const hasErrors = step.components.some((c) => c.error);
 
   return (
     <MuiStep>

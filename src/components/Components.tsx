@@ -2,8 +2,9 @@ import React from "react";
 import TextField, { TextFieldData } from "./TextField";
 import { ComponentType } from "@/lib/store/formStore";
 import { Box } from "@mui/material";
+import Slider, { SliderData } from "./Slidder";
 
-export type ComponentsData = TextFieldData;
+export type ComponentsData = TextFieldData | SliderData;
 
 export interface ComponentsProps {
   fields: ComponentsData[];
@@ -23,8 +24,11 @@ const Components = ({ fields }: ComponentsProps) => {
       }}
     >
       {fields.map((field) => {
-        if (field.type === ComponentType.TextField) {
-          return <TextField key={field.id} textFieldData={field} />;
+        switch (field.type) {
+          case ComponentType.TextField:
+            return <TextField key={field.id} textFieldData={field} />;
+          case ComponentType.Slider:
+            return <Slider key={field.id} slider={field} />;
         }
       })}
     </Box>

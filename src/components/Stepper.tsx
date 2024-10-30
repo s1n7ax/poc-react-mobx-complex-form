@@ -20,6 +20,21 @@ export interface StepperProps {
 
 const Stepper = observer(({ stepper }: StepperProps) => {
   console.log("rendering::Stepper");
+
+  return (
+    <>
+      <MuiStepper activeStep={stepper.activeStep} alternativeLabel>
+        {stepper.steps.map((step) => (
+          <Step key={step.id} step={step} />
+        ))}
+      </MuiStepper>
+      <Components fields={stepper.steps[stepper.activeStep].components} />
+      <StepperButtons stepper={stepper} />
+    </>
+  );
+});
+
+const StepperButtons = observer(({ stepper }: StepperProps) => {
   const stepCount = stepper.steps.length;
 
   const gotoNext = () => {
@@ -51,32 +66,22 @@ const Stepper = observer(({ stepper }: StepperProps) => {
   };
 
   return (
-    <>
-      <MuiStepper activeStep={stepper.activeStep} alternativeLabel>
-        {stepper.steps.map((step) => (
-          <Step key={step.id} step={step} />
-        ))}
-      </MuiStepper>
-
-      <Components fields={stepper.steps[stepper.activeStep].components} />
-
-      <Box>
-        <Button
-          onClick={gotoPrev}
-          disabled={stepper.isBackDisabled}
-          variant="outlined"
-        >
-          Back
-        </Button>
-        <Button
-          onClick={gotoNext}
-          disabled={stepper.isNextDisabled}
-          variant="outlined"
-        >
-          Next
-        </Button>
-      </Box>
-    </>
+    <Box>
+      <Button
+        onClick={gotoPrev}
+        disabled={stepper.isBackDisabled}
+        variant="outlined"
+      >
+        Back
+      </Button>
+      <Button
+        onClick={gotoNext}
+        disabled={stepper.isNextDisabled}
+        variant="outlined"
+      >
+        Next
+      </Button>
+    </Box>
   );
 });
 
