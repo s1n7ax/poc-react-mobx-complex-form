@@ -30,6 +30,7 @@ const getSliderField = (): SliderData => ({
   label: f.lorem.words(f.number.int({ min: 1, max: 3 })),
   placeholder: f.lorem.words(2),
   value: f.number.int({ min: 0, max: 10 }),
+  stepSize: 1,
   error: null,
   validations: {
     min: f.helpers.maybe(() => ({
@@ -37,7 +38,7 @@ const getSliderField = (): SliderData => ({
       message: "This shouldn't be empty",
     })),
     max: {
-      value: 10,
+      value: f.helpers.arrayElement([5, 10]),
       message: "shouldn't be greater",
     },
   },
@@ -56,7 +57,7 @@ const getStepData = (): StepData[] =>
       type: ComponentType.Step,
       name: f.commerce.productName(),
       errors: null,
-      components: getFields(6),
+      components: getFields(1000),
     }),
     { count: 3 },
   );

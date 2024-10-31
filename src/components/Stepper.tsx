@@ -46,9 +46,7 @@ const StepperButtons = observer(({ stepper }: StepperProps) => {
       stepper.isBackDisabled = false;
 
       // disable next because it's the final step
-      if (nextStepIndex + 1 === stepCount) {
-        stepper.isNextDisabled = true;
-      }
+      if (nextStepIndex + 1 === stepCount) stepper.isNextDisabled = true;
     }
   };
 

@@ -11,6 +11,7 @@ export interface FormProps {
 
 const Form = observer(({ data }: FormProps) => {
   console.log("rendering::Form");
+
   const hasLoadedData = useRef<boolean>(false);
 
   if (!hasLoadedData.current) {
@@ -28,7 +29,7 @@ const Form = observer(({ data }: FormProps) => {
     FormComponent = <Stepper stepper={formStore.form} />;
   }
 
-  return <form>{FormComponent}</form>;
+  return <form className="p-5">{FormComponent}</form>;
 });
 
 export default Form;

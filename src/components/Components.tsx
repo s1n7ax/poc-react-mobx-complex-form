@@ -27,6 +27,7 @@ const Components = ({ fields }: ComponentsProps) => {
         switch (field.type) {
           case ComponentType.TextField:
             return <TextField key={field.id} textFieldData={field} />;
+
           case ComponentType.Slider:
             return <Slider key={field.id} slider={field} />;
         }
