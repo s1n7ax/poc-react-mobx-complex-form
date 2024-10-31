@@ -1,14 +1,12 @@
-import { ComponentType } from "@/lib/store/formStore";
 import { Step as MuiStep, StepLabel } from "@mui/material";
-import { ComponentsData } from "./Components";
+import { ComponentData } from "./Components";
 import { observer } from "mobx-react-lite";
+import { ComponentType } from "./models/ComponentType";
+import { GroupComponentModel } from "./models/ComponentModel";
 
-export interface StepData {
-  id: number;
+export interface StepData extends GroupComponentModel<boolean> {
   type: ComponentType.Step;
-  name: string;
-  errors: string | null;
-  components: ComponentsData[];
+  components: ComponentData[];
 }
 
 export interface StepProps {
@@ -17,12 +15,14 @@ export interface StepProps {
 
 const Step = observer(({ step }: StepProps) => {
   console.log("rendering::Step");
-  const hasErrors = step.components.some((c) => c.error);
+  const hasError = step.components.some((c) => c.error);
+
+  step.error = hasError;
 
   return (
     <MuiStep>
       <StepLabel>{step.name}</StepLabel>
-      {hasErrors ? "there is an error in child component" : ""}
+      {hasError ? "there is an error in child component" : ""}
     </MuiStep>
   );
 });

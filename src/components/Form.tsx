@@ -1,35 +1,36 @@
 "use client";
 
-import { ComponentType, formStore } from "@/lib/store/formStore";
-import { ReactNode, useRef } from "react";
-import Stepper, { StepperData } from "./Stepper";
+import { formStore } from "@/lib/store/formStore";
 import { observer } from "mobx-react-lite";
+import ComponentList, { ComponentData } from "./Components";
+import useFormDataLoader from "./hooks/useFormDataLoader";
 
-export interface FormProps {
-  data: StepperData;
+export interface FormData {
+  id: number;
+  name: string;
+  components: ComponentData[];
 }
 
-const Form = observer(({ data }: FormProps) => {
+export interface FormProps {
+  formData: FormData;
+}
+
+const Form = observer(({ formData }: FormProps) => {
   console.log("rendering::Form");
 
-  const hasLoadedData = useRef<boolean>(false);
-
-  if (!hasLoadedData.current) {
-    formStore.form = data;
-    hasLoadedData.current = true;
-  }
-
-  let FormComponent: ReactNode;
+  const loadFormData = useFormDataLoader();
+  console.log("loading data");
+  loadFormData(formData);
 
   if (!formStore.form) {
-    return <p>loading</p>;
+    return <p>loading the form</p>;
   }
 
-  if (formStore.form.type === ComponentType.Stepper) {
-    FormComponent = <Stepper stepper={formStore.form} />;
-  }
-
-  return <form className="p-5">{FormComponent}</form>;
+  return (
+    <form className="p-5">
+      <ComponentList componentList={formStore.form.components} />
+    </form>
+  );
 });
 
 export default Form;

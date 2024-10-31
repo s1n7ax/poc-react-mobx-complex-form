@@ -1,9 +1,8 @@
 import { ComponentType } from "@/lib/store/formStore";
 import { FormGroup, FormLabel, Slider as MuiSlider } from "@mui/material";
-import { Mark } from "@mui/material/Slider/useSlider.types";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 export interface SliderValidationData {
   min?: {
@@ -28,16 +27,17 @@ export interface SliderData {
 }
 
 export interface SliderProps {
-  slider: SliderData;
+  sliderData: SliderData;
 }
 
-const Slider = observer(({ slider }: SliderProps) => {
+const Slider = observer(({ sliderData }: SliderProps) => {
   console.log("rendering::Slider");
-  const { value: minValue } = slider.validations.min ?? { value: 0 };
-  const { value: maxValue } = slider.validations.max;
+
+  const { value: minValue } = sliderData.validations.min ?? { value: 0 };
+  const { value: maxValue } = sliderData.validations.max;
   const isRequired = minValue !== 0;
 
-  const initialValue = useRef<number>(slider.value);
+  const initialValue = useRef<number>(sliderData.value);
 
   const marks = Array.from(
     Array.from({ length: maxValue + 1 })
@@ -47,28 +47,29 @@ const Slider = observer(({ slider }: SliderProps) => {
 
   const validate = (value: number) => {
     if (value < minValue)
-      slider.error =
-        slider.validations.min?.message ??
+      sliderData.error =
+        sliderData.validations.min?.message ??
         "shouldn't be smaller than " + minValue;
-    else if (value > maxValue) slider.error = slider.validations.max.message;
-    else slider.error = null;
+    else if (value > maxValue)
+      sliderData.error = sliderData.validations.max.message;
+    else sliderData.error = null;
   };
 
   return (
     <FormGroup>
-      <FormLabel required={isRequired}>{slider.label}</FormLabel>
+      <FormLabel required={isRequired}>{sliderData.label}</FormLabel>
       <MuiSlider
-        aria-label={slider.label}
+        aria-label={sliderData.label}
         defaultValue={initialValue.current}
-        color={slider.error ? "error" : "primary"}
+        color={sliderData.error ? "error" : "primary"}
         onChange={(_, value) => {
           runInAction(() => {
-            slider.value = value as number;
+            sliderData.value = value as number;
             validate(value as number);
           });
         }}
         marks={marks}
-        getAriaValueText={() => slider.value.toString()}
+        getAriaValueText={() => sliderData.value.toString()}
         valueLabelDisplay="auto"
         max={maxValue}
       />

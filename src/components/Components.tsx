@@ -1,38 +1,44 @@
-import React from "react";
-import TextField, { TextFieldData } from "./TextField";
 import { ComponentType } from "@/lib/store/formStore";
-import { Box } from "@mui/material";
+import { observer } from "mobx-react-lite";
+import FormGroup, { FormGroupData } from "./FormGroup";
 import Slider, { SliderData } from "./Slidder";
+import { StepData } from "./Step";
+import Stepper, { StepperData } from "./Stepper";
+import TextField, { TextFieldData } from "./TextField";
 
-export type ComponentsData = TextFieldData | SliderData;
+export type ComponentData =
+  | TextFieldData
+  | SliderData
+  | FormGroupData
+  | StepperData
+  | StepData;
 
-export interface ComponentsProps {
-  fields: ComponentsData[];
+export interface ComponentListProps {
+  componentList: ComponentData[];
 }
 
-const Components = ({ fields }: ComponentsProps) => {
+const ComponentList = observer(({ componentList }: ComponentListProps) => {
   console.log("rendering::Components");
 
   return (
-    <Box
-      sx={{
-        width: "70%",
-        display: "grid",
-        gridTemplate: "'1fr 1fr'",
-        gridAutoFlow: "row",
-        gap: "1rem",
-      }}
-    >
-      {fields.map((field) => {
+    <>
+      {componentList.map((field) => {
         switch (field.type) {
+          case ComponentType.Stepper:
+            return <Stepper key={field.id} stepperData={field} />;
+
           case ComponentType.TextField:
             return <TextField key={field.id} textFieldData={field} />;
 
           case ComponentType.Slider:
-            return <Slider key={field.id} slider={field} />;
+            return <Slider key={field.id} sliderData={field} />;
+
+          case ComponentType.FormGroup:
+            return <FormGroup key={field.id} formGroupData={field} />;
         }
       })}
-    </Box>
+    </>
   );
-};
-export default Components;
+});
+
+export default ComponentList;
