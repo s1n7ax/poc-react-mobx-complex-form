@@ -1,20 +1,15 @@
-import { ComponentType } from "@/lib/store/formStore";
 import { observer } from "mobx-react-lite";
-import FormGroup, { FormGroupData } from "./FormGroup";
-import Slider, { SliderData } from "./Slidder";
-import { StepData } from "./Step";
-import Stepper, { StepperData } from "./Stepper";
-import TextField, { TextFieldData } from "./TextField";
-
-export type ComponentData =
-  | TextFieldData
-  | SliderData
-  | FormGroupData
-  | StepperData
-  | StepData;
+import FormGroup from "./FormGroup";
+import Slider from "./Slidder";
+import Stepper from "./Stepper";
+import TextField from "./TextField";
+import {
+  ComponentType,
+  GenericComponentsModel,
+} from "./models/component-model";
 
 export interface ComponentListProps {
-  componentList: ComponentData[];
+  componentList: GenericComponentsModel[];
 }
 
 const ComponentList = observer(({ componentList }: ComponentListProps) => {
@@ -23,7 +18,7 @@ const ComponentList = observer(({ componentList }: ComponentListProps) => {
   return (
     <>
       {componentList.map((field) => {
-        switch (field.type) {
+        switch (field.cmpType) {
           case ComponentType.Stepper:
             return <Stepper key={field.id} stepperData={field} />;
 

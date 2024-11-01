@@ -1,29 +1,23 @@
-import { ComponentType } from "@/lib/store/formStore";
 import { FormGroup, FormLabel, Slider as MuiSlider } from "@mui/material";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useRef } from "react";
+import { AtomicComponentModel, ComponentType } from "./models/component-model";
+import { useValidator } from "./validations/number_validator";
 
-export interface SliderValidationData {
-  min?: {
-    value: number;
-    message: string;
-  };
-  max: {
-    value: number;
-    message: string;
-  };
-}
-
-export interface SliderData {
-  id: number;
-  type: ComponentType.Slider;
-  label: string;
-  placeholder: string;
-  value: number;
-  error: string | null;
+export interface SliderData extends AtomicComponentModel<number> {
+  cmpType: ComponentType.Slider;
   stepSize: number;
-  validations: SliderValidationData;
+  validations: {
+    min: {
+      value: number;
+      message: string;
+    };
+    max: {
+      value: number;
+      message: string;
+    };
+  };
 }
 
 export interface SliderProps {
@@ -33,27 +27,17 @@ export interface SliderProps {
 const Slider = observer(({ sliderData }: SliderProps) => {
   console.log("rendering::Slider");
 
-  const { value: minValue } = sliderData.validations.min ?? { value: 0 };
-  const { value: maxValue } = sliderData.validations.max;
-  const isRequired = minValue !== 0;
-
   const initialValue = useRef<number>(sliderData.value);
+  const { value: minVal } = sliderData.validations.min;
+  const { value: maxVal } = sliderData.validations.max;
+  const isRequired = minVal > 0;
+  const validate = useValidator(sliderData.validations);
 
   const marks = Array.from(
-    Array.from({ length: maxValue + 1 })
+    Array.from({ length: maxVal + 1 })
       .keys()
       .map((m) => ({ value: m, label: m.toString() })),
   );
-
-  const validate = (value: number) => {
-    if (value < minValue)
-      sliderData.error =
-        sliderData.validations.min?.message ??
-        "shouldn't be smaller than " + minValue;
-    else if (value > maxValue)
-      sliderData.error = sliderData.validations.max.message;
-    else sliderData.error = null;
-  };
 
   return (
     <FormGroup>
@@ -61,17 +45,27 @@ const Slider = observer(({ sliderData }: SliderProps) => {
       <MuiSlider
         aria-label={sliderData.label}
         defaultValue={initialValue.current}
-        color={sliderData.error ? "error" : "primary"}
+        color={sliderData.hasError ? "error" : "primary"}
         onChange={(_, value) => {
-          runInAction(() => {
-            sliderData.value = value as number;
-            validate(value as number);
-          });
+          const result = validate(value);
+
+          if (result.error) {
+            runInAction(() => {
+              sliderData.hasError = true;
+              sliderData.errorMessage = result.error.errors[0].message;
+            });
+          } else {
+            runInAction(() => {
+              sliderData.hasError = false;
+              sliderData.errorMessage = null;
+              sliderData.value = result.data;
+            });
+          }
         }}
         marks={marks}
         getAriaValueText={() => sliderData.value.toString()}
         valueLabelDisplay="auto"
-        max={maxValue}
+        max={maxVal}
       />
     </FormGroup>
   );

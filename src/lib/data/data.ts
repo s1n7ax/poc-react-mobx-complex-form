@@ -1,25 +1,31 @@
 import { faker as f } from "@faker-js/faker";
-import { ComponentType } from "../store/formStore";
 import { StepData } from "@/components/Step";
 import { TextFieldData } from "@/components/TextField";
 import { SliderData } from "@/components/Slidder";
 import { FormGroupData } from "@/components/FormGroup";
 import { FormData } from "@/components/Form";
+import { ComponentType } from "@/components/models/component-model";
+import { StepperData } from "@/components/Stepper";
 
 const getFormGroup = (): FormGroupData => ({
   id: f.number.int(),
-  type: ComponentType.FormGroup,
-  error: null,
-  components: [getSliderField(), getTextField()],
+  name: "some name",
+  label: f.word.words(2),
+  cmpType: ComponentType.FormGroup,
+  hasError: false,
+  errorMessage: null,
+  children: [getSliderField(), getTextField()],
 });
 
 const getTextField = (): TextFieldData => ({
   id: f.number.int(),
-  type: ComponentType.TextField,
+  name: "some name",
+  cmpType: ComponentType.TextField,
   label: f.lorem.words(f.number.int({ min: 1, max: 3 })),
   placeholder: f.lorem.words(2),
   value: "",
-  error: null,
+  hasError: false,
+  errorMessage: "",
   validations: {
     min: f.helpers.maybe(() => ({
       value: 1,
@@ -34,17 +40,18 @@ const getTextField = (): TextFieldData => ({
 
 const getSliderField = (): SliderData => ({
   id: f.number.int(),
-  type: ComponentType.Slider,
+  name: "some name",
+  cmpType: ComponentType.Slider,
   label: f.lorem.words(f.number.int({ min: 1, max: 3 })),
-  placeholder: f.lorem.words(2),
   value: f.number.int({ min: 0, max: 10 }),
   stepSize: 1,
-  error: null,
+  hasError: false,
+  errorMessage: "",
   validations: {
-    min: f.helpers.maybe(() => ({
+    min: {
       value: 1,
       message: "This shouldn't be empty",
-    })),
+    },
     max: {
       value: f.helpers.arrayElement([5, 10]),
       message: "shouldn't be greater",
@@ -65,26 +72,37 @@ const getStepData = (): StepData[] =>
   f.helpers.multiple(
     () => ({
       id: f.number.int(),
-      type: ComponentType.Step,
       name: f.commerce.productName(),
-      errors: null,
-      components: getFields(3),
+      label: f.commerce.productName(),
+      cmpType: ComponentType.Step,
+      hasError: false,
+      errorMessage: null,
+      children: getFields(3),
     }),
     { count: 3 },
   );
 
+const getStepperData = (): StepperData[] => [
+  {
+    id: f.number.int(),
+    name: "some name",
+    label: "form label",
+    cmpType: ComponentType.Stepper,
+    activeStep: 0,
+    isNextDisabled: false,
+    isBackDisabled: true,
+    hasError: false,
+    errorMessage: "",
+    children: getStepData(),
+  },
+];
+
 export const data: FormData = {
   id: f.number.int(),
+  cmpType: ComponentType.Form,
   name: f.word.words(2),
-  components: [
-    {
-      id: f.number.int(),
-      type: ComponentType.Stepper,
-      activeStep: 0,
-      isNextDisabled: false,
-      isBackDisabled: true,
-      errors: [],
-      steps: getStepData(),
-    },
-  ],
+  label: f.word.words(2),
+  hasError: false,
+  errorMessage: "",
+  children: getStepperData(),
 };

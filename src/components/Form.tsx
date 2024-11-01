@@ -2,13 +2,13 @@
 
 import { formStore } from "@/lib/store/formStore";
 import { observer } from "mobx-react-lite";
-import ComponentList, { ComponentData } from "./Components";
+import ComponentList from "./ComponentList";
 import useFormDataLoader from "./hooks/useFormDataLoader";
+import { ComponentType, GroupComponentModel } from "./models/component-model";
 
-export interface FormData {
-  id: number;
-  name: string;
-  components: ComponentData[];
+export interface FormData extends GroupComponentModel {
+  cmpType: ComponentType.Form;
+  label: string;
 }
 
 export interface FormProps {
@@ -28,7 +28,7 @@ const Form = observer(({ formData }: FormProps) => {
 
   return (
     <form className="p-5">
-      <ComponentList componentList={formStore.form.components} />
+      <ComponentList componentList={formStore.form.children} />
     </form>
   );
 });

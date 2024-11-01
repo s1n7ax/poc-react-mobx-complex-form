@@ -1,12 +1,9 @@
 import { Step as MuiStep, StepLabel } from "@mui/material";
-import { ComponentData } from "./Components";
 import { observer } from "mobx-react-lite";
-import { ComponentType } from "./models/ComponentType";
-import { GroupComponentModel } from "./models/ComponentModel";
+import { ComponentType, GroupComponentModel } from "./models/component-model";
 
-export interface StepData extends GroupComponentModel<boolean> {
-  type: ComponentType.Step;
-  components: ComponentData[];
+export interface StepData extends GroupComponentModel {
+  cmpType: ComponentType.Step;
 }
 
 export interface StepProps {
@@ -15,9 +12,9 @@ export interface StepProps {
 
 const Step = observer(({ step }: StepProps) => {
   console.log("rendering::Step");
-  const hasError = step.components.some((c) => c.error);
+  const hasError = step.children.some((c) => c.hasError);
 
-  step.error = hasError;
+  step.hasError = hasError;
 
   return (
     <MuiStep>

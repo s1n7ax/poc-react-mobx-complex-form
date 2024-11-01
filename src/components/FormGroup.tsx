@@ -1,16 +1,13 @@
-import { ComponentType } from "@/lib/store/formStore";
 import { observer } from "mobx-react-lite";
 import Slider, { SliderData } from "./Slidder";
 import TextField, { TextFieldData } from "./TextField";
 import { FormGroup as MuiFormGroup } from "@mui/material";
+import { ComponentType, GroupComponentModel } from "./models/component-model";
 
 export type ComponentsData = TextFieldData | SliderData;
 
-export interface FormGroupData {
-  id: number;
-  type: ComponentType.FormGroup;
-  error: string | null;
-  components: ComponentsData[];
+export interface FormGroupData extends GroupComponentModel {
+  cmpType: ComponentType.FormGroup;
 }
 
 export interface FormGroupProps {
@@ -18,8 +15,9 @@ export interface FormGroupProps {
 }
 
 const FormGroup = observer(({ formGroupData }: FormGroupProps) => {
-  const hasError = formGroupData.components.some((c) => c.error);
   console.log("rendering::FormGroup");
+
+  const hasError = formGroupData.children.some((c) => c.hasError);
 
   return (
     <MuiFormGroup
@@ -32,8 +30,8 @@ const FormGroup = observer(({ formGroupData }: FormGroupProps) => {
         borderWidth: "1px",
       }}
     >
-      {formGroupData.components.map((c) => {
-        switch (c.type) {
+      {formGroupData.children.map((c) => {
+        switch (c.cmpType) {
           case ComponentType.TextField:
             return <TextField key={c.id} textFieldData={c} />;
 
