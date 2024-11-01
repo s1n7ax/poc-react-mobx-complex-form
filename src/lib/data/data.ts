@@ -77,7 +77,7 @@ const getStepData = (): StepData[] =>
       cmpType: ComponentType.Step,
       hasError: false,
       errorMessage: null,
-      children: getFields(3),
+      children: getFields(500),
     }),
     { count: 3 },
   );
