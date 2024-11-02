@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ValidationDataModel } from "../models/validation-model";
 
-export const useValidator = (rules: ValidationDataModel) => {
+export const validateNum = (rules: ValidationDataModel) => {
   let Schema = z.coerce.number();
 
   if (rules.min) {

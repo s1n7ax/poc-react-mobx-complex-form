@@ -6,7 +6,7 @@ export default function Home() {
 
   return (
     <div>
-      <Form formData={formData} />
+      <Form data={formData} />
     </div>
   );
 }

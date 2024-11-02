@@ -1,8 +1,7 @@
 import { TextField as MuiTextField } from "@mui/material";
-import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
+import { getStrValidator } from "./hooks/useValidator";
 import { AtomicComponentModel, ComponentType } from "./models/component-model";
-import { useValidator } from "./validations/string_validator";
 
 export interface TextFieldData
   extends AtomicComponentModel<string | null | undefined> {
@@ -11,36 +10,22 @@ export interface TextFieldData
 }
 
 export interface TextFieldProps {
-  textFieldData: TextFieldData;
+  data: TextFieldData;
 }
 
-const TextField = observer(({ textFieldData }: TextFieldProps) => {
+const TextField = observer(({ data }: TextFieldProps) => {
   console.log("rendering::TextField");
-  const v = textFieldData.validations;
-  const validate = useValidator(v);
+  const validate = getStrValidator(data);
 
   return (
     <MuiTextField
-      error={!!textFieldData.hasError}
-      required={!!textFieldData.validations.min}
-      label={textFieldData.label}
-      helperText={textFieldData.errorMessage}
-      placeholder={textFieldData.placeholder}
+      error={!!data.hasError}
+      required={!!data.validations.min}
+      label={data.label}
+      helperText={data.errorMessage}
+      placeholder={data.placeholder}
       onChange={(ev) => {
-        const result = validate(ev.target.value);
-
-        if (result.error) {
-          runInAction(() => {
-            textFieldData.hasError = true;
-            textFieldData.errorMessage = result.error.errors[0].message;
-          });
-        } else {
-          runInAction(() => {
-            textFieldData.hasError = false;
-            textFieldData.errorMessage = null;
-            textFieldData.value = result.data;
-          });
-        }
+        validate(ev.target.value);
       }}
     />
   );

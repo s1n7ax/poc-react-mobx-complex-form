@@ -1,7 +1,7 @@
 import { z, ZodOptional, ZodString } from "zod";
 import { ValidationDataModel } from "../models/validation-model";
 
-export const useValidator = (rules: ValidationDataModel) => {
+export const validateStr = (rules: ValidationDataModel) => {
   let Schema: ZodString | ZodOptional<ZodString> = z.string();
 
   if (rules.min) {

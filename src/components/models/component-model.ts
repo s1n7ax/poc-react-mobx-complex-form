@@ -1,4 +1,5 @@
-import { FormGroupData } from "../FormGroup";
+import { FieldGroupData } from "../FieldGroup";
+import { FormData } from "../Form";
 import { SliderData } from "../Slidder";
 import { StepData } from "../Step";
 import { StepperData } from "../Stepper";
@@ -11,13 +12,14 @@ export enum ComponentType {
   Step,
   TextField,
   Slider,
-  FormGroup,
+  FieldGroup,
 }
 
 export type GenericComponentsModel =
+  | FormData
   | TextFieldData
   | SliderData
-  | FormGroupData
+  | FieldGroupData
   | StepperData
   | StepData;
 
@@ -26,6 +28,9 @@ export interface BaseComponentModel {
   cmpType: ComponentType;
   name: string;
   label: string;
+  isDirty: false;
+
+  // showError: boolean;
   hasError: boolean;
   errorMessage: string | null | undefined;
 }

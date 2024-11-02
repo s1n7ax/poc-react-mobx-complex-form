@@ -1,7 +1,7 @@
 import { Box, Button, Stepper as MuiStepper } from "@mui/material";
 import Step, { StepData } from "./Step";
 import { observer } from "mobx-react-lite";
-import ComponentList from "./ComponentList";
+import GenericComponentList from "./GenericComponentList";
 import { runInAction } from "mobx";
 import { ComponentType, GroupComponentModel } from "./models/component-model";
 
@@ -14,10 +14,10 @@ export interface StepperData extends GroupComponentModel {
 }
 
 export interface StepperProps {
-  stepperData: StepperData;
+  data: StepperData;
 }
 
-const Stepper = observer(({ stepperData }: StepperProps) => {
+const Stepper = observer(({ data }: StepperProps) => {
   console.log("rendering::Stepper");
 
   return (
@@ -29,9 +29,9 @@ const Stepper = observer(({ stepperData }: StepperProps) => {
           gap: "2rem",
         }}
       >
-        <MuiStepper activeStep={stepperData.activeStep} alternativeLabel>
-          {stepperData.children.map((step) => (
-            <Step key={step.id} step={step} />
+        <MuiStepper activeStep={data.activeStep} alternativeLabel>
+          {data.children.map((step) => (
+            <Step key={step.id} data={step} />
           ))}
         </MuiStepper>
 
@@ -43,19 +43,17 @@ const Stepper = observer(({ stepperData }: StepperProps) => {
             gap: "1rem",
           }}
         >
-          <ComponentList
-            componentList={
-              stepperData.children[stepperData.activeStep].children
-            }
+          <GenericComponentList
+            componentList={data.children[data.activeStep].children}
           />
         </Box>
-        <StepperButtons stepperData={stepperData} />
+        <StepperButtons data={data} />
       </Box>
     </>
   );
 });
 
-const StepperButtons = observer(({ stepperData }: StepperProps) => {
+const StepperButtons = observer(({ data: stepperData }: StepperProps) => {
   const stepCount = stepperData.children.length;
 
   const gotoNext = () => {

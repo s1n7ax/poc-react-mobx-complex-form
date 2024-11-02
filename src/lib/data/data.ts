@@ -2,19 +2,21 @@ import { faker as f } from "@faker-js/faker";
 import { StepData } from "@/components/Step";
 import { TextFieldData } from "@/components/TextField";
 import { SliderData } from "@/components/Slidder";
-import { FormGroupData } from "@/components/FormGroup";
+import { FieldGroupData } from "@/components/FieldGroup";
 import { FormData } from "@/components/Form";
 import { ComponentType } from "@/components/models/component-model";
 import { StepperData } from "@/components/Stepper";
 
-const getFormGroup = (): FormGroupData => ({
+const getFormGroup = (): FieldGroupData => ({
   id: f.number.int(),
   name: "some name",
   label: f.word.words(2),
-  cmpType: ComponentType.FormGroup,
-  hasError: false,
-  errorMessage: null,
+  cmpType: ComponentType.FieldGroup,
   children: [getSliderField(), getTextField()],
+  isDirty: false,
+
+  hasError: true,
+  errorMessage: null,
 });
 
 const getTextField = (): TextFieldData => ({
@@ -24,7 +26,9 @@ const getTextField = (): TextFieldData => ({
   label: f.lorem.words(f.number.int({ min: 1, max: 3 })),
   placeholder: f.lorem.words(2),
   value: "",
-  hasError: false,
+
+  isDirty: false,
+  hasError: true,
   errorMessage: "",
   validations: {
     min: f.helpers.maybe(() => ({
@@ -45,7 +49,8 @@ const getSliderField = (): SliderData => ({
   label: f.lorem.words(f.number.int({ min: 1, max: 3 })),
   value: f.number.int({ min: 0, max: 10 }),
   stepSize: 1,
-  hasError: false,
+  isDirty: false,
+  hasError: true,
   errorMessage: "",
   validations: {
     min: {
@@ -61,7 +66,7 @@ const getSliderField = (): SliderData => ({
 
 const getFields = (
   count: number,
-): (TextFieldData | SliderData | FormGroupData)[] =>
+): (TextFieldData | SliderData | FieldGroupData)[] =>
   f.helpers.shuffle([
     ...f.helpers.multiple(getTextField, { count }),
     ...f.helpers.multiple(getSliderField, { count }),
@@ -75,9 +80,10 @@ const getStepData = (): StepData[] =>
       name: f.commerce.productName(),
       label: f.commerce.productName(),
       cmpType: ComponentType.Step,
-      hasError: false,
+      isDirty: false,
+      hasError: true,
       errorMessage: null,
-      children: getFields(500),
+      children: getFields(50),
     }),
     { count: 3 },
   );
@@ -91,7 +97,8 @@ const getStepperData = (): StepperData[] => [
     activeStep: 0,
     isNextDisabled: false,
     isBackDisabled: true,
-    hasError: false,
+    isDirty: false,
+    hasError: true,
     errorMessage: "",
     children: getStepData(),
   },
@@ -102,7 +109,8 @@ export const data: FormData = {
   cmpType: ComponentType.Form,
   name: f.word.words(2),
   label: f.word.words(2),
-  hasError: false,
+  isDirty: false,
+  hasError: true,
   errorMessage: "",
   children: getStepperData(),
 };

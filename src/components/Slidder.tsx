@@ -1,9 +1,8 @@
 import { FormGroup, FormLabel, Slider as MuiSlider } from "@mui/material";
-import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useRef } from "react";
+import { getNumValidator } from "./hooks/useValidator";
 import { AtomicComponentModel, ComponentType } from "./models/component-model";
-import { useValidator } from "./validations/number_validator";
 
 export interface SliderData extends AtomicComponentModel<number> {
   cmpType: ComponentType.Slider;
@@ -21,54 +20,42 @@ export interface SliderData extends AtomicComponentModel<number> {
 }
 
 export interface SliderProps {
-  sliderData: SliderData;
+  data: SliderData;
 }
 
-const Slider = observer(({ sliderData }: SliderProps) => {
+const Slider = observer(({ data }: SliderProps) => {
   console.log("rendering::Slider");
 
-  const initialValue = useRef<number>(sliderData.value);
-  const { value: minVal } = sliderData.validations.min;
-  const { value: maxVal } = sliderData.validations.max;
+  const initialValue = useRef<number>(data.value);
+  const { value: minVal } = data.validations.min;
+  const { value: maxVal } = data.validations.max;
   const isRequired = minVal > 0;
-  const validate = useValidator(sliderData.validations);
-
-  const marks = Array.from(
-    Array.from({ length: maxVal + 1 })
-      .keys()
-      .map((m) => ({ value: m, label: m.toString() })),
-  );
+  const validate = getNumValidator(data);
 
   return (
     <FormGroup>
-      <FormLabel required={isRequired}>{sliderData.label}</FormLabel>
+      <FormLabel required={isRequired}>{data.label}</FormLabel>
       <MuiSlider
-        aria-label={sliderData.label}
+        aria-label={data.label}
         defaultValue={initialValue.current}
-        color={sliderData.hasError ? "error" : "primary"}
+        color={data.hasError ? "error" : "primary"}
         onChange={(_, value) => {
-          const result = validate(value);
-
-          if (result.error) {
-            runInAction(() => {
-              sliderData.hasError = true;
-              sliderData.errorMessage = result.error.errors[0].message;
-            });
-          } else {
-            runInAction(() => {
-              sliderData.hasError = false;
-              sliderData.errorMessage = null;
-              sliderData.value = result.data;
-            });
-          }
+          validate(value);
         }}
-        marks={marks}
-        getAriaValueText={() => sliderData.value.toString()}
+        marks={getMarks(maxVal)}
+        getAriaValueText={() => data.value.toString()}
         valueLabelDisplay="auto"
         max={maxVal}
       />
     </FormGroup>
   );
 });
+
+const getMarks = (maxVal: number) =>
+  Array.from(
+    Array.from({ length: maxVal + 1 })
+      .keys()
+      .map((m) => ({ value: m, label: m.toString() })),
+  );
 
 export default Slider;

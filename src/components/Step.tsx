@@ -7,18 +7,18 @@ export interface StepData extends GroupComponentModel {
 }
 
 export interface StepProps {
-  step: StepData;
+  data: StepData;
 }
 
-const Step = observer(({ step }: StepProps) => {
+const Step = observer(({ data }: StepProps) => {
   console.log("rendering::Step");
-  const hasError = step.children.some((c) => c.hasError);
+  const hasError = data.children.some((c) => c.hasError);
 
-  step.hasError = hasError;
+  data.hasError = hasError;
 
   return (
     <MuiStep>
-      <StepLabel>{step.name}</StepLabel>
+      <StepLabel>{data.name}</StepLabel>
       {hasError ? "there is an error in child component" : ""}
     </MuiStep>
   );
