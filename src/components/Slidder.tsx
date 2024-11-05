@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRef } from "react";
 import { getNumValidator } from "./hooks/useValidator";
 import { AtomicComponentModel, ComponentType } from "./models/component-model";
+import { getErrorStateBasedOnIsDirty } from "./lib/utils/error";
 
 export interface SliderData extends AtomicComponentModel<number> {
   cmpType: ComponentType.Slider;
@@ -27,10 +28,12 @@ const Slider = observer(({ data }: SliderProps) => {
   console.log("rendering::Slider");
 
   const initialValue = useRef<number>(data.value);
+
   const { value: minVal } = data.validations.min;
   const { value: maxVal } = data.validations.max;
   const isRequired = minVal > 0;
   const validate = getNumValidator(data);
+  const { hasError } = getErrorStateBasedOnIsDirty(data);
 
   return (
     <FormGroup>
@@ -38,7 +41,7 @@ const Slider = observer(({ data }: SliderProps) => {
       <MuiSlider
         aria-label={data.label}
         defaultValue={initialValue.current}
-        color={data.hasError ? "error" : "primary"}
+        color={hasError ? "error" : "primary"}
         onChange={(_, value) => {
           validate(value);
         }}

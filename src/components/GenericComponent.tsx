@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { observer } from "mobx-react-lite";
 import FieldGroup from "./FieldGroup";
 import Form from "./Form";
 import {
@@ -6,16 +6,16 @@ import {
   GenericComponentsModel,
 } from "./models/component-model";
 import Slider from "./Slidder";
-import Step from "./Step";
-import Stepper from "./Stepper";
+import Step from "./Stepper/Step";
+import Stepper from "./Stepper/Stepper";
 import TextField from "./TextField";
 
 export interface GenericComponentProps {
   data: GenericComponentsModel;
 }
 
-export default function GenericComponent({ data }: GenericComponentProps) {
-  console.log("rendering::generic component");
+const GenericComponent = observer(({ data }: GenericComponentProps) => {
+  console.log("rendering::GenericComponent");
 
   switch (data.cmpType) {
     case ComponentType.Form:
@@ -36,4 +36,6 @@ export default function GenericComponent({ data }: GenericComponentProps) {
     case ComponentType.TextField:
       return <TextField data={data} />;
   }
-}
+});
+
+export default GenericComponent;

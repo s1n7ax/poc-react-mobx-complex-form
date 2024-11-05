@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
-import Slider, { SliderData } from "./Slidder";
-import TextField, { TextFieldData } from "./TextField";
-import { FormGroup as MuiFormGroup } from "@mui/material";
-import { ComponentType, GroupComponentModel } from "./models/component-model";
+import ChildStateBoundary from "./ChildStateBoundary";
 import GenericComponentList from "./GenericComponentList";
+import { ComponentType, GroupComponentModel } from "./models/component-model";
+import { SliderData } from "./Slidder";
+import { TextFieldData } from "./TextField";
 
 export type ComponentsData = TextFieldData | SliderData;
 
@@ -15,23 +15,23 @@ export interface FormGroupProps {
   data: FieldGroupData;
 }
 
-const FieldGroup = observer(({ data: formGroupData }: FormGroupProps) => {
+const FieldGroup = observer(({ data }: FormGroupProps) => {
   console.log("rendering::FormGroup");
 
-  const hasError = formGroupData.children.some((c) => c.hasError);
-
   return (
-    <div
-      style={{
-        display: "grid",
-        gap: "1rem",
-        borderColor: hasError ? "red" : "green",
-        borderWidth: "1px",
-        padding: "10px",
-      }}
-    >
-      <GenericComponentList componentList={formGroupData.children} />
-    </div>
+    <ChildStateBoundary data={data}>
+      <div
+        style={{
+          display: "grid",
+          gap: "1rem",
+          borderColor: data.isDirty && data.hasError ? "red" : "green",
+          borderWidth: "1px",
+          padding: "10px",
+        }}
+      >
+        <GenericComponentList componentList={data.children} />
+      </div>
+    </ChildStateBoundary>
   );
 });
 

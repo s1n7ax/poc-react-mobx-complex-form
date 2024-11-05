@@ -1,6 +1,6 @@
 import { Step as MuiStep, StepLabel } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { ComponentType, GroupComponentModel } from "./models/component-model";
+import { ComponentType, GroupComponentModel } from "../models/component-model";
 
 export interface StepData extends GroupComponentModel {
   cmpType: ComponentType.Step;

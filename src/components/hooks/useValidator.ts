@@ -13,11 +13,13 @@ export const getStrValidator = (
 
     if (result.error) {
       runInAction(() => {
+        field.isDirty = true;
         field.hasError = true;
         field.errorMessage = result.error.errors[0].message;
       });
     } else {
       runInAction(() => {
+        field.isDirty = true;
         field.hasError = false;
         field.errorMessage = null;
         field.value = result.data;
@@ -34,11 +36,13 @@ export const getNumValidator = (field: AtomicComponentModel<number>) => {
 
     if (result.error) {
       runInAction(() => {
+        field.isDirty = true;
         field.hasError = true;
         field.errorMessage = result.error.errors[0].message;
       });
     } else {
       runInAction(() => {
+        field.isDirty = true;
         field.hasError = false;
         field.errorMessage = null;
         field.value = result.data;

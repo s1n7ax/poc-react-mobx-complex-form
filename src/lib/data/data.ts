@@ -5,7 +5,7 @@ import { SliderData } from "@/components/Slidder";
 import { FieldGroupData } from "@/components/FieldGroup";
 import { FormData } from "@/components/Form";
 import { ComponentType } from "@/components/models/component-model";
-import { StepperData } from "@/components/Stepper";
+import { StepperData } from "@/components/Stepper/Stepper";
 
 const getFormGroup = (): FieldGroupData => ({
   id: f.number.int(),

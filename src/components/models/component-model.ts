@@ -1,8 +1,8 @@
 import { FieldGroupData } from "../FieldGroup";
 import { FormData } from "../Form";
 import { SliderData } from "../Slidder";
-import { StepData } from "../Step";
-import { StepperData } from "../Stepper";
+import { StepData } from "../Stepper/Step";
+import { StepperData } from "../Stepper/Stepper";
 import { TextFieldData } from "../TextField";
 import { ValidationDataModel } from "./validation-model";
 
@@ -28,7 +28,7 @@ export interface BaseComponentModel {
   cmpType: ComponentType;
   name: string;
   label: string;
-  isDirty: false;
+  isDirty: boolean;
 
   // showError: boolean;
   hasError: boolean;
