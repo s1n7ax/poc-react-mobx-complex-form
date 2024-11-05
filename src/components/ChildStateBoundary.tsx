@@ -20,8 +20,8 @@ const ChildStateBoundary = observer(
     const isDirty = data.children.some((c) => c.isDirty);
 
     runInAction(() => {
-      // data.hasError = hasError;
-      // data.isDirty = isDirty;
+      data.hasError = hasError;
+      data.isDirty = isDirty;
     });
 
     return <> {children}</>;
