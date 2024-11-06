@@ -1,20 +1,11 @@
+import { GroupComponentState } from "@/lib/store/GroupComponentStore";
 import { observer } from "mobx-react-lite";
-import { ComponentType, GroupComponentModel } from "../models/component-model";
-import { StepData } from "./Step";
 import StepperBody from "./StepperBody";
 import StepperButtons from "./StepperButtons";
 import StepperHeader from "./StepperHeader";
 
-export interface StepperData extends GroupComponentModel {
-  activeStep: number;
-  isNextDisabled: boolean;
-  isBackDisabled: boolean;
-  cmpType: ComponentType.Stepper;
-  children: StepData[];
-}
-
 export interface StepperProps {
-  data: StepperData;
+  data: GroupComponentState;
 }
 
 const Stepper = observer(({ data }: StepperProps) => {
@@ -27,6 +18,8 @@ const Stepper = observer(({ data }: StepperProps) => {
           display: "grid",
           gridColumn: "auto",
           gap: "2rem",
+          border: "2px solid red",
+          padding: "2rem",
         }}
       >
         <StepperHeader data={data} />

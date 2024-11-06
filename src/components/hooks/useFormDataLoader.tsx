@@ -1,13 +1,13 @@
-import { formStore } from "@/lib/store/formStore";
+import formStore from "@/lib/store/FormStore";
 import { useRef } from "react";
-import { FormData } from "../Form";
+import { GroupComponentModel } from "../models/component-model";
 
 export default function useFormDataLoader() {
   const hasLoadedData = useRef<boolean>(false);
 
-  return (formData: FormData) => {
+  return (formData: GroupComponentModel) => {
     if (!hasLoadedData.current) {
-      formStore.form = formData;
+      formStore.loadForm(formData);
       hasLoadedData.current = true;
     }
   };

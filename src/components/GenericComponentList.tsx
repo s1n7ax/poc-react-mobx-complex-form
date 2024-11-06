@@ -1,23 +1,25 @@
+import { GroupComponentState } from "@/lib/store/GroupComponentStore";
 import { observer } from "mobx-react-lite";
 import GenericComponent from "./GenericComponent";
-import { GenericComponentsModel } from "./models/component-model";
 
 export interface ComponentListProps {
-  componentList: GenericComponentsModel[];
+  data: GroupComponentState;
 }
 
-const GenericComponentList = observer(
-  ({ componentList }: ComponentListProps) => {
-    console.log("rendering::Components");
+const GenericComponentList = observer(({ data }: ComponentListProps) => {
+  console.log("rendering::Components");
 
-    return (
-      <>
-        {componentList.map((field) => {
-          return <GenericComponent key={field.id} data={field} />;
-        })}
-      </>
-    );
-  },
-);
+  if (!data) {
+    console.trace();
+  }
+
+  return (
+    <>
+      {data.children.map((field) => {
+        return <GenericComponent key={field.id} data={field} />;
+      })}
+    </>
+  );
+});
 
 export default GenericComponentList;

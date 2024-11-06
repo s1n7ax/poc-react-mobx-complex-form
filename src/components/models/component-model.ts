@@ -1,45 +1,50 @@
-import { FieldGroupData } from "../FieldGroup";
-import { FormData } from "../Form";
-import { SliderData } from "../Slidder";
-import { StepData } from "../Stepper/Step";
-import { StepperData } from "../Stepper/Stepper";
-import { TextFieldData } from "../TextField";
-import { ValidationDataModel } from "./validation-model";
-
 export enum ComponentType {
   Form,
   Stepper,
   Step,
-  TextField,
-  Slider,
   FieldGroup,
+  Slider,
+  TextField,
 }
 
-export type GenericComponentsModel =
-  | FormData
-  | TextFieldData
-  | SliderData
-  | FieldGroupData
-  | StepperData
-  | StepData;
+export interface ComponentValidationsModel {
+  required?: {
+    value: boolean;
+    message: string;
+  };
+
+  min?: {
+    value: number;
+    message: string;
+  };
+
+  max?: {
+    value: number;
+    message: string;
+  };
+}
 
 export interface BaseComponentModel {
   id: number;
-  cmpType: ComponentType;
   name: string;
   label: string;
-  isDirty: boolean;
-
-  // showError: boolean;
-  hasError: boolean;
-  errorMessage: string | null | undefined;
+  cmpType: ComponentType;
 }
 
-export interface AtomicComponentModel<TValue> extends BaseComponentModel {
-  value: TValue;
-  validations: ValidationDataModel;
+export interface AtomicComponentModel extends BaseComponentModel {
+  cmpType: ComponentType.Slider | ComponentType.TextField;
+  validations: ComponentValidationsModel;
+  placeholder: string;
+  value: number | boolean | string;
+  children?: never;
 }
 
 export interface GroupComponentModel extends BaseComponentModel {
-  children: GenericComponentsModel[];
+  cmpType:
+    | ComponentType.Form
+    | ComponentType.Stepper
+    | ComponentType.Step
+    | ComponentType.FieldGroup;
+  children: (GroupComponentModel | AtomicComponentModel)[];
+  validations?: never;
 }

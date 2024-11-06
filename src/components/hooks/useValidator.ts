@@ -1,15 +1,14 @@
+import { AtomicComponentState } from "@/lib/store/AtomicComponentStore";
 import { runInAction } from "mobx";
-import { AtomicComponentModel } from "../models/component-model";
-import { validateStr } from "../validations/string_validator";
 import { validateNum } from "../validations/number_validator";
+import { validateStr } from "../validations/string_validator";
 
-export const getStrValidator = (
-  field: AtomicComponentModel<string | null | undefined>,
-) => {
+export const getStrValidator = (field: AtomicComponentState) => {
   const validate = validateStr(field.validations);
 
   return (value: unknown) => {
     const result = validate(value);
+    console.log("validating", result);
 
     if (result.error) {
       runInAction(() => {
@@ -28,7 +27,7 @@ export const getStrValidator = (
   };
 };
 
-export const getNumValidator = (field: AtomicComponentModel<number>) => {
+export const getNumValidator = (field: AtomicComponentState) => {
   const validate = validateNum(field.validations);
 
   return (value: unknown) => {

@@ -1,12 +1,13 @@
-import Form from "@/components/Form";
+import FormBuilder from "@/components/FormBuilder";
 import { data } from "@/lib/data/data";
+import { staticData } from "@/lib/data/static-data";
 
 export default function Home() {
-  const formData = data;
+  console.log(data);
 
   return (
     <div>
-      <Form data={formData} />
+      <FormBuilder data={staticData} />
     </div>
   );
 }

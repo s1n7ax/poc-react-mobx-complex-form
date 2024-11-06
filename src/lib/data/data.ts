@@ -1,11 +1,11 @@
-import { faker as f } from "@faker-js/faker";
-import { StepData } from "@/components/Step";
-import { TextFieldData } from "@/components/TextField";
-import { SliderData } from "@/components/Slidder";
 import { FieldGroupData } from "@/components/FieldGroup";
 import { FormData } from "@/components/Form";
 import { ComponentType } from "@/components/models/component-model";
+import { SliderData } from "@/components/Slidder";
+import { StepData } from "@/components/Stepper/Step";
 import { StepperData } from "@/components/Stepper/Stepper";
+import { TextFieldData } from "@/components/TextField";
+import { faker as f } from "@faker-js/faker";
 
 const getFormGroup = (): FieldGroupData => ({
   id: f.number.int(),
@@ -13,8 +13,8 @@ const getFormGroup = (): FieldGroupData => ({
   label: f.word.words(2),
   cmpType: ComponentType.FieldGroup,
   children: [getSliderField(), getTextField()],
-  isDirty: false,
 
+  isDirty: false,
   hasError: true,
   errorMessage: null,
 });
@@ -83,9 +83,9 @@ const getStepData = (): StepData[] =>
       isDirty: false,
       hasError: true,
       errorMessage: null,
-      children: getFields(50),
+      children: getFields(1),
     }),
-    { count: 3 },
+    { count: 1 },
   );
 
 const getStepperData = (): StepperData[] => [

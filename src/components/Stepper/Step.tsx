@@ -1,25 +1,23 @@
+import { AtomicComponentState } from "@/lib/store/AtomicComponentStore";
 import { Step as MuiStep, StepLabel } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { ComponentType, GroupComponentModel } from "../models/component-model";
-
-export interface StepData extends GroupComponentModel {
-  cmpType: ComponentType.Step;
-}
 
 export interface StepProps {
-  data: StepData;
+  data: AtomicComponentState;
 }
 
-const Step = observer(({ data }: StepProps) => {
+const Step = observer(({ data, ...rest }: StepProps) => {
   console.log("rendering::Step");
-  const hasError = data.children.some((c) => c.hasError);
-
-  data.hasError = hasError;
 
   return (
-    <MuiStep>
+    <MuiStep
+      {...rest}
+      sx={{
+        border: "2px solid purple",
+      }}
+    >
       <StepLabel>{data.name}</StepLabel>
-      {hasError ? "there is an error in child component" : ""}
+      {data.hasError ? "there is an error in child component" : ""}
     </MuiStep>
   );
 });
