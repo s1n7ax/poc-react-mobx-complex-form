@@ -1,6 +1,7 @@
 import {
   ComponentType,
   ComponentValidationsModel,
+  ConditionalProperties,
 } from "@/components/models/component-model";
 import { makeObservable, observable } from "mobx";
 
@@ -19,6 +20,8 @@ export interface AtomicComponentConstruct {
   value: string | boolean | number | null | undefined;
   cmpType: ComponentType.TextField | ComponentType.Slider;
   validations: ComponentValidationsModel;
+  isWatched?: boolean;
+  conditionalProps?: ConditionalProperties;
 }
 
 export class AtomicComponentState {
@@ -29,9 +32,11 @@ export class AtomicComponentState {
   formValue: string | boolean | number | null | undefined = null;
   cmpType: ComponentType.TextField | ComponentType.Slider =
     ComponentType.TextField;
+  conditionalProps?: ConditionalProperties = undefined;
   validations: ComponentValidationsStateModel = {
     required: { value: false, message: "" },
   };
+  isWatched: boolean = false;
   hasError: boolean = true;
   errorMessage: string | null = null;
   isDirty: boolean = false;
@@ -44,6 +49,7 @@ export class AtomicComponentState {
       value: observable,
       formValue: observable,
       cmpType: observable,
+      conditionalProps: observable,
       validations: observable,
       hasError: observable,
       errorMessage: observable,
@@ -55,6 +61,8 @@ export class AtomicComponentState {
     this.label = data.label;
     this.cmpType = data.cmpType;
     this.value = data.value;
+    this.conditionalProps = data.conditionalProps;
+    this.isWatched = data.isWatched ?? false;
     this.validations = {
       ...data.validations,
       required: data.validations.required ?? {
@@ -62,7 +70,6 @@ export class AtomicComponentState {
         message: "Value is required",
       },
     };
-
     this.formValue = data.value;
     this.hasError = true;
     this.errorMessage = null;

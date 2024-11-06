@@ -14,8 +14,6 @@ export interface GenericComponentProps {
 const GenericComponent = observer(({ data }: GenericComponentProps) => {
   console.log("rendering::GenericComponent");
 
-  console.log(">>>>", data);
-
   switch (data.cmpType) {
     case ComponentType.FieldGroup:
       return <FieldGroup data={data} />;

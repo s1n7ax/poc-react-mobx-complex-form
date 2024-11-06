@@ -1,6 +1,9 @@
-import { ComponentType } from "@/components/models/component-model";
-import { AtomicComponentState } from "./AtomicComponentStore";
+import {
+  ComponentType,
+  ConditionalProperties,
+} from "@/components/models/component-model";
 import { computed, makeObservable, observable } from "mobx";
+import { AtomicComponentState } from "./AtomicComponentStore";
 
 export interface GroupComponentConstruct {
   id: number;
@@ -11,6 +14,7 @@ export interface GroupComponentConstruct {
     | ComponentType.FieldGroup
     | ComponentType.Step
     | ComponentType.Form;
+  conditionalProps?: ConditionalProperties;
   children: (GroupComponentState | AtomicComponentState)[];
 }
 
@@ -23,6 +27,7 @@ export class GroupComponentState {
     | ComponentType.Stepper
     | ComponentType.Step
     | ComponentType.FieldGroup = ComponentType.Form;
+  conditionalProps?: ConditionalProperties = undefined;
   children: (GroupComponentState | AtomicComponentState)[] = [];
 
   constructor(data: GroupComponentConstruct) {
@@ -31,6 +36,7 @@ export class GroupComponentState {
       name: observable,
       label: observable,
       cmpType: observable,
+      conditionalProps: observable,
       children: observable,
       hasError: computed,
       isDirty: computed,
@@ -40,6 +46,7 @@ export class GroupComponentState {
     this.name = data.name;
     this.label = data.label;
     this.cmpType = data.cmpType;
+    this.conditionalProps = data.conditionalProps;
     this.children = data.children;
   }
 

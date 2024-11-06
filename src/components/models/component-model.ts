@@ -7,6 +7,17 @@ export enum ComponentType {
   TextField,
 }
 
+export type ValueType = string | number | boolean | null | undefined;
+
+export interface ConditionalProperties {
+  disabled?: {
+    when: {
+      fieldId: number;
+      value: ValueType;
+    };
+  };
+}
+
 export interface ComponentValidationsModel {
   required?: {
     value: boolean;
@@ -29,13 +40,15 @@ export interface BaseComponentModel {
   name: string;
   label: string;
   cmpType: ComponentType;
+  conditionalProps?: ConditionalProperties;
 }
 
 export interface AtomicComponentModel extends BaseComponentModel {
   cmpType: ComponentType.Slider | ComponentType.TextField;
   validations: ComponentValidationsModel;
   placeholder: string;
-  value: number | boolean | string;
+  value: ValueType;
+  isWatched?: boolean;
   children?: never;
 }
 
@@ -47,4 +60,5 @@ export interface GroupComponentModel extends BaseComponentModel {
     | ComponentType.FieldGroup;
   children: (GroupComponentModel | AtomicComponentModel)[];
   validations?: never;
+  isWatched?: never;
 }

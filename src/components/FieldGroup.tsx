@@ -7,7 +7,7 @@ export interface FormGroupProps {
 }
 
 const FieldGroup = observer(({ data }: FormGroupProps) => {
-  console.log("rendering::FormGroup", data);
+  console.log("rendering::FormGroup");
 
   return (
     <div

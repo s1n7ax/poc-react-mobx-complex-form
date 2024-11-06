@@ -27,17 +27,3 @@ export const createStore = (
 
   return makeGroupStore(formData);
 };
-
-export class FormStore {
-  form!: GroupComponentState;
-
-  constructor() {}
-
-  loadForm(form: GroupComponentModel) {
-    this.form = createStore(form);
-  }
-}
-
-const formStore = new FormStore();
-
-export default formStore;

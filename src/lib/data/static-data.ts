@@ -102,6 +102,37 @@ export const staticData: GroupComponentModel = {
               label: "quis",
               placeholder: "",
               value: "",
+              isWatched: true,
+              validations: {
+                required: {
+                  value: true,
+                  message: "hey this is required",
+                },
+                min: {
+                  value: 1,
+                  message: "This shouldn't be empty",
+                },
+                max: {
+                  value: 10,
+                  message: "shouldn't be greater",
+                },
+              },
+            },
+            {
+              id: 1167246207542,
+              name: "some name",
+              cmpType: ComponentType.TextField,
+              label: "quis rsot rsotin",
+              placeholder: "",
+              value: "",
+              conditionalProps: {
+                disabled: {
+                  when: {
+                    fieldId: 116724620751234,
+                    value: "testing",
+                  },
+                },
+              },
               validations: {
                 required: {
                   value: true,
