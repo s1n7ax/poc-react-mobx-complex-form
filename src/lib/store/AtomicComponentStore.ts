@@ -1,9 +1,10 @@
+import { watchedFormData } from "@/components/FormBuilder";
 import {
   ComponentType,
   ComponentValidationsModel,
   ConditionalProperties,
 } from "@/components/models/component-model";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export interface ComponentValidationsStateModel
   extends ComponentValidationsModel {
@@ -54,6 +55,8 @@ export class AtomicComponentState {
       hasError: observable,
       errorMessage: observable,
       isDirty: observable,
+
+      isDisabled: computed,
     });
 
     this.id = data.id;
@@ -74,5 +77,47 @@ export class AtomicComponentState {
     this.hasError = true;
     this.errorMessage = null;
     this.isDirty = false;
+  }
+
+  get isDisabled(): boolean {
+    const propCond = this.conditionalProps?.disabled;
+
+    if (!propCond) return false;
+
+    if (propCond.when.matchAll)
+      return propCond.when.matchAll.every((pred) => {
+        const watchedData = watchedFormData.fields[pred.id];
+        return watchedData?.value === pred.value;
+      });
+
+    if (propCond.when.matchAny) {
+      return propCond.when.matchAny.every((pred) => {
+        const watchedData = watchedFormData.fields[pred.id];
+        return watchedData?.value === pred.value;
+      });
+    }
+
+    return false;
+  }
+
+  get isHidden(): boolean {
+    const propCond = this.conditionalProps?.hidden;
+
+    if (!propCond) return false;
+
+    if (propCond.when.matchAll)
+      return propCond.when.matchAll.every((pred) => {
+        const watchedData = watchedFormData.fields[pred.id];
+        return watchedData?.value === pred.value;
+      });
+
+    if (propCond.when.matchAny) {
+      return propCond.when.matchAny.every((pred) => {
+        const watchedData = watchedFormData.fields[pred.id];
+        return watchedData?.value === pred.value;
+      });
+    }
+
+    return false;
   }
 }

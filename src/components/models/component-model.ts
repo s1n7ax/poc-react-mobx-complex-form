@@ -1,3 +1,5 @@
+import { Either } from "@/lib/utils/type/either";
+
 export enum ComponentType {
   Form,
   Stepper,
@@ -9,13 +11,30 @@ export enum ComponentType {
 
 export type ValueType = string | number | boolean | null | undefined;
 
+export enum ConstraintType {
+  GreaterThan,
+  LessThan,
+  Equal,
+}
+
+export interface Condition {
+  id: number;
+  value: ValueType;
+  constraint: ConstraintType;
+}
+
+export type MatchType = Either<
+  { matchAny: Condition[] },
+  { matchAll: Condition[] }
+>;
+
+export interface PropertyCondition {
+  when: MatchType;
+}
+
 export interface ConditionalProperties {
-  disabled?: {
-    when: {
-      fieldId: number;
-      value: ValueType;
-    };
-  };
+  disabled?: PropertyCondition;
+  hidden?: PropertyCondition;
 }
 
 export interface ComponentValidationsModel {

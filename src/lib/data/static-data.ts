@@ -1,5 +1,6 @@
 import {
   ComponentType,
+  ConstraintType,
   GroupComponentModel,
 } from "@/components/models/component-model";
 
@@ -172,8 +173,13 @@ export const staticData: GroupComponentModel = {
               conditionalProps: {
                 disabled: {
                   when: {
-                    fieldId: 2,
-                    value: "world",
+                    matchAll: [
+                      {
+                        id: 2,
+                        constraint: ConstraintType.Equal,
+                        value: "world",
+                      },
+                    ],
                   },
                 },
               },
@@ -231,8 +237,79 @@ export const staticData: GroupComponentModel = {
                   conditionalProps: {
                     disabled: {
                       when: {
-                        fieldId: 2,
-                        value: "hello",
+                        matchAll: [
+                          {
+                            id: 2,
+                            constraint: ConstraintType.Equal,
+                            value: "hello",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  validations: {
+                    required: {
+                      value: true,
+                      message: "hey this is required",
+                    },
+                    min: {
+                      value: 1,
+                      message: "This shouldn't be empty",
+                    },
+                    max: {
+                      value: 10,
+                      message: "shouldn't be greater",
+                    },
+                  },
+                },
+              ],
+            },
+            {
+              id: 10,
+              name: "some name",
+              cmpType: ComponentType.FieldGroup,
+              label: "quis",
+              children: [
+                {
+                  id: 11,
+                  name: "some name",
+                  cmpType: ComponentType.Slider,
+                  label: "quis",
+                  placeholder: "",
+                  value: "",
+                  isWatched: true,
+                  validations: {
+                    required: {
+                      value: true,
+                      message: "hey this is required",
+                    },
+                    min: {
+                      value: 1,
+                      message: "This shouldn't be empty",
+                    },
+                    max: {
+                      value: 10,
+                      message: "shouldn't be greater",
+                    },
+                  },
+                },
+                {
+                  id: 12,
+                  name: "some name",
+                  cmpType: ComponentType.TextField,
+                  label: "quis",
+                  placeholder: "",
+                  value: "",
+                  conditionalProps: {
+                    hidden: {
+                      when: {
+                        matchAny: [
+                          {
+                            id: 11,
+                            constraint: ConstraintType.GreaterThan,
+                            value: 5,
+                          },
+                        ],
                       },
                     },
                   },

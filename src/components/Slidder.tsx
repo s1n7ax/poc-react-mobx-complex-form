@@ -28,6 +28,7 @@ const Slider = observer(({ data }: SliderProps) => {
   return (
     <FormGroup
       sx={{
+        display: data.isHidden ? "none" : "block",
         borderColor: "blue",
         borderWidth: "2px",
         padding: "2rem",

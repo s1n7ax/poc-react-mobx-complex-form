@@ -25,7 +25,6 @@ export const getStrValidator = (field: AtomicComponentState) => {
         field.value = result.data;
 
         if (field.isWatched) {
-          console.log("setting watched value", result.data);
           watchedFormData.setValue(field, result.data);
         }
       });
@@ -51,6 +50,10 @@ export const getNumValidator = (field: AtomicComponentState) => {
         field.hasError = false;
         field.errorMessage = null;
         field.value = result.data;
+
+        if (field.isWatched) {
+          watchedFormData.setValue(field, result.data);
+        }
       });
     }
   };
