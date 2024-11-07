@@ -17,11 +17,22 @@ export enum ConstraintType {
   Equal,
 }
 
-export interface Condition {
-  id: number;
-  value: ValueType;
-  constraint: ConstraintType;
-}
+export type Condition =
+  | {
+      id: number;
+      value: number;
+      constraint: ConstraintType.GreaterThan;
+    }
+  | {
+      id: number;
+      value: number;
+      constraint: ConstraintType.LessThan;
+    }
+  | {
+      id: number;
+      value: ValueType;
+      constraint: ConstraintType.Equal;
+    };
 
 export type MatchType = Either<
   { matchAny: Condition[] },

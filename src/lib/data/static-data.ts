@@ -303,7 +303,7 @@ export const staticData: GroupComponentModel = {
                   conditionalProps: {
                     hidden: {
                       when: {
-                        matchAny: [
+                        matchAll: [
                           {
                             id: 11,
                             constraint: ConstraintType.GreaterThan,

@@ -5,6 +5,7 @@ import {
   ConditionalProperties,
 } from "@/lib/models/component-model";
 import { computed, makeObservable, observable } from "mobx";
+import { constraintFactory } from "../constraints/constraint";
 
 export interface ComponentValidationsStateModel
   extends ComponentValidationsModel {
@@ -108,7 +109,12 @@ export class AtomicComponentState {
     if (propCond.when.matchAll)
       return propCond.when.matchAll.every((pred) => {
         const watchedData = watchedFormData.fields[pred.id];
-        return watchedData?.value === pred.value;
+
+        if (watchedData?.value && typeof watchedData.value === "number")
+          return constraintFactory(pred.constraint).match(
+            watchedData.value,
+            pred.value as number,
+          );
       });
 
     if (propCond.when.matchAny) {
