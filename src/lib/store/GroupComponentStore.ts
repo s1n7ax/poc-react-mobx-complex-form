@@ -1,7 +1,7 @@
 import {
   ComponentType,
   ConditionalProperties,
-} from "@/components/models/component-model";
+} from "@/lib/models/component-model";
 import { computed, makeObservable, observable } from "mobx";
 import { AtomicComponentState } from "./AtomicComponentStore";
 

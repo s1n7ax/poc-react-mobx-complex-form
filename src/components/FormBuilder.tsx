@@ -3,7 +3,7 @@
 import { createStore } from "@/lib/store/FormStore";
 import { observer } from "mobx-react-lite";
 import Form from "./Form";
-import { GroupComponentModel } from "./models/component-model";
+import { GroupComponentModel } from "../lib/models/component-model";
 import { WatchedFormDataStore } from "@/lib/store/WatchedFormDataStore";
 
 export interface FormBuilderProps {

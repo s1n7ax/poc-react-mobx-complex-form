@@ -3,7 +3,7 @@ import { FormGroup, FormLabel, Slider as MuiSlider } from "@mui/material";
 import assert from "assert";
 import { observer } from "mobx-react-lite";
 import { useRef } from "react";
-import { getNumValidator } from "./hooks/useValidator";
+import { getNumValidator } from "../lib/hooks/useValidator";
 
 export interface SliderProps {
   data: AtomicComponentState;

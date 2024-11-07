@@ -1,4 +1,4 @@
-import { ComponentType, ValueType } from "@/components/models/component-model";
+import { ComponentType, ValueType } from "@/lib/models/component-model";
 import { action, makeObservable, observable } from "mobx";
 
 type FieldData = { id: number; cmpType: ComponentType };

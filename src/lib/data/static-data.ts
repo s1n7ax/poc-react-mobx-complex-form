@@ -2,7 +2,7 @@ import {
   ComponentType,
   ConstraintType,
   GroupComponentModel,
-} from "@/components/models/component-model";
+} from "@/lib/models/component-model";
 
 export const staticData: GroupComponentModel = {
   id: 685296423904867,

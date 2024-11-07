@@ -1,6 +1,6 @@
 import { FieldGroupData } from "@/components/FieldGroup";
 import { FormData } from "@/components/Form";
-import { ComponentType } from "@/components/models/component-model";
+import { ComponentType } from "@/lib/models/component-model";
 import { SliderData } from "@/components/Slidder";
 import { StepData } from "@/components/Stepper/Step";
 import { StepperData } from "@/components/Stepper/Stepper";

@@ -1,7 +1,7 @@
 import { AtomicComponentState } from "@/lib/store/AtomicComponentStore";
 import { TextField as MuiTextField } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { getStrValidator } from "./hooks/useValidator";
+import { getStrValidator } from "../lib/hooks/useValidator";
 
 export interface TextFieldProps {
   data: AtomicComponentState;

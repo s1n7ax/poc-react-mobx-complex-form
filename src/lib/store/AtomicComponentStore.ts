@@ -3,7 +3,7 @@ import {
   ComponentType,
   ComponentValidationsModel,
   ConditionalProperties,
-} from "@/components/models/component-model";
+} from "@/lib/models/component-model";
 import { computed, makeObservable, observable } from "mobx";
 
 export interface ComponentValidationsStateModel

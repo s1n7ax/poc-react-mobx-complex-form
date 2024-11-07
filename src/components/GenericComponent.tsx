@@ -2,7 +2,7 @@ import { AtomicComponentState } from "@/lib/store/AtomicComponentStore";
 import { GroupComponentState } from "@/lib/store/GroupComponentStore";
 import { observer } from "mobx-react-lite";
 import FieldGroup from "./FieldGroup";
-import { ComponentType } from "./models/component-model";
+import { ComponentType } from "../lib/models/component-model";
 import Slider from "./Slidder";
 import Stepper from "./Stepper/Stepper";
 import TextField from "./TextField";

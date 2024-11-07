@@ -1,7 +1,7 @@
 import {
   AtomicComponentModel,
   GroupComponentModel,
-} from "@/components/models/component-model";
+} from "@/lib/models/component-model";
 import { AtomicComponentState } from "./AtomicComponentStore";
 import { GroupComponentState } from "./GroupComponentStore";
 
