@@ -9,7 +9,7 @@ export interface TextFieldProps {
 }
 
 const TextField = observer(({ data }: TextFieldProps) => {
-  console.log("rendering::TextField");
+  console.log("rendering::TextField::", data.id);
   const validate = getStrValidator(data);
 
   let isDisabled = false;
@@ -18,23 +18,20 @@ const TextField = observer(({ data }: TextFieldProps) => {
     const { fieldId, value: expectedValue } =
       data?.conditionalProps?.disabled.when;
 
-    const watchedData = watchedFormData.fields.find((f) => f.id === fieldId);
-
-    console.log("wached data::", watchedData?.value);
+    const watchedData = watchedFormData.fields[fieldId];
 
     if (watchedData) {
-      console.log("*************");
       isDisabled = watchedData.value === expectedValue;
     }
   }
 
   return (
     <MuiTextField
-      error={data.hasError}
+      error={data.isDirty && data.hasError}
       disabled={isDisabled}
-      helperText={data.errorMessage}
+      helperText={data.isDirty && data.errorMessage}
       required={data.validations.required.value}
-      label={data.label}
+      label={data.label + "id::" + data.id}
       placeholder={data.label}
       onChange={(ev) => {
         validate(ev.target.value);

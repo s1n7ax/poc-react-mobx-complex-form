@@ -50,7 +50,7 @@ export const staticData: GroupComponentModel = {
                   },
                 },
                 {
-                  id: 1167246207510639,
+                  id: 1,
                   name: "some name",
                   cmpType: ComponentType.TextField,
                   label: "quis",
@@ -96,7 +96,7 @@ export const staticData: GroupComponentModel = {
               },
             },
             {
-              id: 116724620751234,
+              id: 2,
               name: "some name",
               cmpType: ComponentType.TextField,
               label: "quis",
@@ -119,7 +119,51 @@ export const staticData: GroupComponentModel = {
               },
             },
             {
-              id: 1167246207542,
+              id: 3,
+              name: "some name",
+              cmpType: ComponentType.TextField,
+              label: "quis rsot rsotin",
+              placeholder: "",
+              value: "",
+              validations: {
+                required: {
+                  value: true,
+                  message: "hey this is required",
+                },
+                min: {
+                  value: 1,
+                  message: "This shouldn't be empty",
+                },
+                max: {
+                  value: 10,
+                  message: "shouldn't be greater",
+                },
+              },
+            },
+            {
+              id: 4,
+              name: "some name",
+              cmpType: ComponentType.TextField,
+              label: "quis rsot rsotin",
+              placeholder: "",
+              value: "",
+              validations: {
+                required: {
+                  value: true,
+                  message: "hey this is required",
+                },
+                min: {
+                  value: 1,
+                  message: "This shouldn't be empty",
+                },
+                max: {
+                  value: 10,
+                  message: "shouldn't be greater",
+                },
+              },
+            },
+            {
+              id: 5,
               name: "some name",
               cmpType: ComponentType.TextField,
               label: "quis rsot rsotin",
@@ -128,8 +172,8 @@ export const staticData: GroupComponentModel = {
               conditionalProps: {
                 disabled: {
                   when: {
-                    fieldId: 116724620751234,
-                    value: "testing",
+                    fieldId: 2,
+                    value: "world",
                   },
                 },
               },
@@ -147,6 +191,67 @@ export const staticData: GroupComponentModel = {
                   message: "shouldn't be greater",
                 },
               },
+            },
+
+            {
+              id: 6,
+              name: "some name",
+              cmpType: ComponentType.FieldGroup,
+              label: "quis",
+              children: [
+                {
+                  id: 7,
+                  name: "some name",
+                  cmpType: ComponentType.Slider,
+                  label: "quis",
+                  placeholder: "",
+                  value: "",
+                  validations: {
+                    required: {
+                      value: true,
+                      message: "hey this is required",
+                    },
+                    min: {
+                      value: 1,
+                      message: "This shouldn't be empty",
+                    },
+                    max: {
+                      value: 10,
+                      message: "shouldn't be greater",
+                    },
+                  },
+                },
+                {
+                  id: 8,
+                  name: "some name",
+                  cmpType: ComponentType.TextField,
+                  label: "quis",
+                  placeholder: "",
+                  value: "",
+                  conditionalProps: {
+                    disabled: {
+                      when: {
+                        fieldId: 2,
+                        value: "hello",
+                      },
+                    },
+                  },
+                  validations: {
+                    required: {
+                      value: true,
+                      message: "hey this is required",
+                    },
+                    min: {
+                      value: 1,
+                      message: "This shouldn't be empty",
+                    },
+                    max: {
+                      value: 10,
+                      message: "shouldn't be greater",
+                    },
+                  },
+                },
+              ],
             },
           ],
         },
