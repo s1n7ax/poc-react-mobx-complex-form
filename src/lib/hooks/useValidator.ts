@@ -1,9 +1,8 @@
 import { AtomicComponentState } from "@/lib/store/AtomicComponentStore";
 import { runInAction } from "mobx";
+import { watchedFormData } from "../../components/FormBuilder";
 import { validateNum } from "../validations/number_validator";
 import { validateStr } from "../validations/string_validator";
-import { watchedFormData } from "../../components/FormBuilder";
-import { fi } from "@faker-js/faker";
 
 export const getStrValidator = (field: AtomicComponentState) => {
   const validate = validateStr(field.validations);

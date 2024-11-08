@@ -1,11 +1,12 @@
-import { watchedFormData } from "@/components/FormBuilder";
 import {
+  BaseComponentModel,
   ComponentType,
   ComponentValidationsModel,
-  ConditionalProperties,
+  ValueType,
 } from "@/lib/models/component-model";
 import { computed, makeObservable, observable } from "mobx";
-import { constraintFactory } from "../constraints/constraint";
+import { BaseComponentStore } from "./BaseComponentStore";
+import { isOptionalPropEnabled } from "./constraints/is_disabled";
 
 export interface ComponentValidationsStateModel
   extends ComponentValidationsModel {
@@ -15,26 +16,16 @@ export interface ComponentValidationsStateModel
   };
 }
 
-export interface AtomicComponentConstruct {
-  id: number;
-  name: string;
-  label: string;
-  value: string | boolean | number | null | undefined;
+export interface AtomicComponentConstruct extends BaseComponentModel {
   cmpType: ComponentType.TextField | ComponentType.Slider;
+  value: string | boolean | number | null | undefined;
   validations: ComponentValidationsModel;
   isWatched?: boolean;
-  conditionalProps?: ConditionalProperties;
 }
 
-export class AtomicComponentState {
-  id: number = 0;
-  name: string = "";
-  label: string = "";
-  value: string | boolean | number | null | undefined = null;
-  formValue: string | boolean | number | null | undefined = null;
-  cmpType: ComponentType.TextField | ComponentType.Slider =
-    ComponentType.TextField;
-  conditionalProps?: ConditionalProperties = undefined;
+export class AtomicComponentState extends BaseComponentStore {
+  value: ValueType = null;
+  formValue: ValueType = null;
   validations: ComponentValidationsStateModel = {
     required: { value: false, message: "" },
   };
@@ -44,28 +35,21 @@ export class AtomicComponentState {
   isDirty: boolean = false;
 
   constructor(data: AtomicComponentConstruct) {
+    super(data);
+
     makeObservable(this, {
-      id: observable,
-      name: observable,
-      label: observable,
       value: observable,
       formValue: observable,
-      cmpType: observable,
-      conditionalProps: observable,
       validations: observable,
       hasError: observable,
       errorMessage: observable,
       isDirty: observable,
 
       isDisabled: computed,
+      isHidden: computed,
     });
 
-    this.id = data.id;
-    this.name = data.name;
-    this.label = data.label;
-    this.cmpType = data.cmpType;
     this.value = data.value;
-    this.conditionalProps = data.conditionalProps;
     this.isWatched = data.isWatched ?? false;
     this.validations = {
       ...data.validations,
@@ -81,49 +65,10 @@ export class AtomicComponentState {
   }
 
   get isDisabled(): boolean {
-    const propCond = this.conditionalProps?.disabled;
-
-    if (!propCond) return false;
-
-    if (propCond.when.matchAll)
-      return propCond.when.matchAll.every((pred) => {
-        const watchedData = watchedFormData.fields[pred.id];
-        return watchedData?.value === pred.value;
-      });
-
-    if (propCond.when.matchAny) {
-      return propCond.when.matchAny.every((pred) => {
-        const watchedData = watchedFormData.fields[pred.id];
-        return watchedData?.value === pred.value;
-      });
-    }
-
-    return false;
+    return isOptionalPropEnabled(this.conditionalProps?.disabled);
   }
 
   get isHidden(): boolean {
-    const propCond = this.conditionalProps?.hidden;
-
-    if (!propCond) return false;
-
-    if (propCond.when.matchAll)
-      return propCond.when.matchAll.every((pred) => {
-        const watchedData = watchedFormData.fields[pred.id];
-
-        if (watchedData?.value && typeof watchedData.value === "number")
-          return constraintFactory(pred.constraint).match(
-            watchedData.value,
-            pred.value as number,
-          );
-      });
-
-    if (propCond.when.matchAny) {
-      return propCond.when.matchAny.every((pred) => {
-        const watchedData = watchedFormData.fields[pred.id];
-        return watchedData?.value === pred.value;
-      });
-    }
-
-    return false;
+    return isOptionalPropEnabled(this.conditionalProps?.hidden);
   }
 }

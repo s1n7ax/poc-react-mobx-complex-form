@@ -309,6 +309,11 @@ export const staticData: GroupComponentModel = {
                             constraint: ConstraintType.GreaterThan,
                             value: 5,
                           },
+                          {
+                            id: 2,
+                            constraint: ConstraintType.Equal,
+                            value: "hello",
+                          },
                         ],
                       },
                     },

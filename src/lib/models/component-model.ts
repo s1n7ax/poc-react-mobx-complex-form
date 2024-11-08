@@ -43,10 +43,9 @@ export interface PropertyCondition {
   when: MatchType;
 }
 
-export interface ConditionalProperties {
-  disabled?: PropertyCondition;
-  hidden?: PropertyCondition;
-}
+export type ConditionalProperties = {
+  [key: string]: PropertyCondition;
+};
 
 export interface ComponentValidationsModel {
   required?: {

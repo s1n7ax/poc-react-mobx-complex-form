@@ -3,8 +3,8 @@ import { EqualConstraint } from "./equal";
 import { GreaterThanConstraint } from "./greater";
 import { LessThanConstraint } from "./less";
 
-export interface Constraint<T extends ValueType> {
-  match(actualValue: T, expectedValue: T): boolean;
+export interface Constraint {
+  match(actualValue: ValueType, expectedValue: ValueType): boolean;
 }
 
 const constTypeMap = {
