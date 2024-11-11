@@ -3,7 +3,6 @@ import { FormGroup, FormLabel, Slider as MuiSlider } from "@mui/material";
 import assert from "assert";
 import { observer } from "mobx-react-lite";
 import { useRef } from "react";
-import { getNumValidator } from "../lib/hooks/useValidator";
 
 export interface SliderProps {
   data: AtomicComponentState;
@@ -23,7 +22,6 @@ const Slider = observer(({ data }: SliderProps) => {
 
   const max = data.validations.max.value;
   const initialValue = useRef<number>(data.value as number);
-  const validate = getNumValidator(data);
 
   return (
     <FormGroup
@@ -35,15 +33,13 @@ const Slider = observer(({ data }: SliderProps) => {
       }}
     >
       <FormLabel required={data.validations.required.value}>
-        {data.label}
+        {data.label + "::" + data.id}
       </FormLabel>
       <MuiSlider
         aria-label={data.label}
         defaultValue={initialValue.current}
-        color={data.hasError ? "error" : "primary"}
-        onChange={(_, value) => {
-          validate(value);
-        }}
+        color={data.isDirty && data.error.hasError ? "error" : "primary"}
+        onChange={(_, value) => data.changeValue(value as number)}
         marks={getMarks(max)}
         getAriaValueText={() => data.value?.toString() ?? ""}
         valueLabelDisplay="auto"

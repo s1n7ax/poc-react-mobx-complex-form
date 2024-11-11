@@ -1,7 +1,6 @@
 import { AtomicComponentState } from "@/lib/store/AtomicComponentStore";
 import { TextField as MuiTextField } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { getStrValidator } from "../lib/hooks/useValidator";
 
 export interface TextFieldProps {
   data: AtomicComponentState;
@@ -9,22 +8,18 @@ export interface TextFieldProps {
 
 const TextField = observer(({ data }: TextFieldProps) => {
   console.log("rendering::TextField::", data.id);
-  const validate = getStrValidator(data);
-
   return (
     <MuiTextField
       sx={{
         display: data.isHidden ? "none" : "block",
       }}
-      error={data.isDirty && data.hasError}
+      error={data.isDirty && data.error.hasError}
       disabled={data.isDisabled}
-      helperText={data.isDirty && data.errorMessage}
+      helperText={data.isDirty && data.error.message}
       required={data.validations.required.value}
       label={data.label + "id::" + data.id}
       placeholder={data.label}
-      onChange={(ev) => {
-        validate(ev.target.value);
-      }}
+      onChange={(ev) => data.changeValue(ev.target.value)}
     />
   );
 });

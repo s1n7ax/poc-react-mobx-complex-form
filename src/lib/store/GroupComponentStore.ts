@@ -1,7 +1,9 @@
 import { computed, makeObservable, observable } from "mobx";
+import { BaseComponentModel } from "../models/component-model";
 import { AtomicComponentState } from "./AtomicComponentStore";
 import { BaseComponentStore } from "./BaseComponentStore";
-import { BaseComponentModel } from "../models/component-model";
+
+export type ErrorModel = { hasError: boolean };
 
 export interface GroupComponentConstruct extends BaseComponentModel {
   children: (GroupComponentState | AtomicComponentState)[];
@@ -15,15 +17,16 @@ export class GroupComponentState extends BaseComponentStore {
 
     makeObservable(this, {
       children: observable,
-      hasError: computed,
+      error: computed,
       isDirty: computed,
     });
 
     this.children = data.children;
   }
 
-  get hasError(): boolean {
-    return this.children.some((c) => c.hasError);
+  get error(): ErrorModel {
+    const hasError = this.children.some((c) => c.error.hasError);
+    return { hasError };
   }
 
   get isDirty(): boolean {

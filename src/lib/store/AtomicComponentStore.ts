@@ -4,9 +4,11 @@ import {
   ComponentValidationsModel,
   ValueType,
 } from "@/lib/models/component-model";
-import { computed, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { BaseComponentStore } from "./BaseComponentStore";
-import { isOptionalPropEnabled } from "./constraints/is_disabled";
+import { numVal, strVal } from "./validations/field_validations";
+import { isOptionalPropEnabled } from "./validations/option_checks";
+import { watchedFormData } from "@/components/FormBuilder";
 
 export interface ComponentValidationsStateModel
   extends ComponentValidationsModel {
@@ -23,6 +25,8 @@ export interface AtomicComponentConstruct extends BaseComponentModel {
   isWatched?: boolean;
 }
 
+export type ErrorModel = { hasError: boolean; message: string };
+
 export class AtomicComponentState extends BaseComponentStore {
   value: ValueType = null;
   formValue: ValueType = null;
@@ -30,8 +34,6 @@ export class AtomicComponentState extends BaseComponentStore {
     required: { value: false, message: "" },
   };
   isWatched: boolean = false;
-  hasError: boolean = true;
-  errorMessage: string | null = null;
   isDirty: boolean = false;
 
   constructor(data: AtomicComponentConstruct) {
@@ -41,12 +43,12 @@ export class AtomicComponentState extends BaseComponentStore {
       value: observable,
       formValue: observable,
       validations: observable,
-      hasError: observable,
-      errorMessage: observable,
       isDirty: observable,
 
+      error: computed,
       isDisabled: computed,
       isHidden: computed,
+      changeValue: action,
     });
 
     this.value = data.value;
@@ -59,9 +61,17 @@ export class AtomicComponentState extends BaseComponentStore {
       },
     };
     this.formValue = data.value;
-    this.hasError = true;
-    this.errorMessage = null;
     this.isDirty = false;
+  }
+
+  get error(): ErrorModel {
+    if (this.cmpType === ComponentType.TextField)
+      return strVal(this.value as string, this.validations);
+
+    if (this.cmpType === ComponentType.Slider)
+      return numVal(this.value as number, this.validations);
+
+    return { hasError: true, message: "initial error" };
   }
 
   get isDisabled(): boolean {
@@ -70,5 +80,19 @@ export class AtomicComponentState extends BaseComponentStore {
 
   get isHidden(): boolean {
     return isOptionalPropEnabled(this.conditionalProps?.hidden);
+  }
+
+  changeValue(value: ValueType) {
+    this.value = value;
+    this.isDirty = true;
+    if (this.isWatched) {
+      watchedFormData.setValue(
+        {
+          id: this.id,
+          cmpType: this.cmpType,
+        },
+        value,
+      );
+    }
   }
 }
