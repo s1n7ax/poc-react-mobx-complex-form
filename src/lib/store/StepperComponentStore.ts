@@ -7,7 +7,7 @@ import {
 export class StepperComponentState extends GroupComponentState {
   activeStep = 0;
   stepCount = 0;
-  didClickNext = false;
+  didClickNext: boolean[] = [];
 
   constructor(data: GroupComponentConstruct) {
     super(data);
@@ -19,6 +19,7 @@ export class StepperComponentState extends GroupComponentState {
       hasNext: computed,
       hasPrev: computed,
       isNextDisabled: computed,
+      activeHasError: computed,
 
       next: action,
       prev: action,
@@ -28,17 +29,17 @@ export class StepperComponentState extends GroupComponentState {
   }
 
   next() {
-    this.didClickNext = true;
+    this.didClickNext[this.activeStep] = true;
 
-    if (this.hasNext) {
-      const children = (this.children[this.activeStep] as GroupComponentState)
-        .children;
+    const children = (this.children[this.activeStep] as GroupComponentState)
+      .children;
 
-      const chidHasError = children.some((f) => f.error.hasError);
+    const chidHasError = children.some((f) => f.error.hasError);
 
-      if (chidHasError) {
-        children.filter((f) => f.setDirty());
-      } else {
+    if (chidHasError) {
+      children.forEach((f) => f.setDirty());
+    } else {
+      if (this.hasNext) {
         this.activeStep += 1;
       }
     }
@@ -59,12 +60,17 @@ export class StepperComponentState extends GroupComponentState {
   }
 
   get isNextDisabled(): boolean {
-    if (this.didClickNext) {
-      console.log(">>>>>>>>>>>");
+    if (this.didClickNext[this.activeStep]) {
       return this.children[this.activeStep].error.hasError;
     } else {
-      console.log("***********");
       return false;
     }
+  }
+
+  get activeHasError(): boolean {
+    return (
+      this.children[this.activeStep]?.children?.some((f) => f.error.hasError) ??
+      true
+    );
   }
 }

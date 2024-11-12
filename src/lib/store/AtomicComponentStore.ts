@@ -35,6 +35,7 @@ export class AtomicComponentState extends BaseComponentStore {
   };
   isWatched: boolean = false;
   isDirty: boolean = false;
+  children?: never;
 
   constructor(data: AtomicComponentConstruct) {
     super(data);

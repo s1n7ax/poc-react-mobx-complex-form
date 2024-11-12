@@ -14,7 +14,10 @@ const StepperButtons = observer(({ data }: StepperProps) => {
       </Button>
       <Button
         type={data.hasNext ? "button" : "submit"}
-        onClick={() => data.next()}
+        onClick={(ev) => {
+          ev.preventDefault();
+          data.next();
+        }}
         disabled={data.isNextDisabled}
         variant="outlined"
       >

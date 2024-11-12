@@ -1,13 +1,16 @@
-import { AtomicComponentState } from "@/lib/store/AtomicComponentStore";
+import { GroupComponentState } from "@/lib/store/GroupComponentStore";
 import { Step as MuiStep, StepLabel } from "@mui/material";
 import { observer } from "mobx-react-lite";
 
 export interface StepProps {
-  data: AtomicComponentState;
+  data: GroupComponentState;
 }
 
 const Step = observer(({ data, ...rest }: StepProps) => {
   console.log("rendering::Step");
+
+  const childrenHasError = data.children.some((f) => f.error.hasError);
+  const childrenIsDirty = data.children.every((f) => f.isDirty);
 
   return (
     <MuiStep
@@ -16,8 +19,9 @@ const Step = observer(({ data, ...rest }: StepProps) => {
         border: "2px solid purple",
       }}
     >
-      <StepLabel>{data.name}</StepLabel>
-      {data.hasError ? "there is an error in child component" : ""}
+      <StepLabel error={childrenIsDirty && childrenHasError}>
+        {data.name}
+      </StepLabel>
     </MuiStep>
   );
 });
