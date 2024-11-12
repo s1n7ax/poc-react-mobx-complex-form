@@ -1,6 +1,6 @@
 "use client";
 
-import { createStore } from "@/lib/store/FormStore";
+import { createStore } from "@/lib/store/store-utils";
 import { observer } from "mobx-react-lite";
 import Form from "./Form";
 import { GroupComponentModel } from "../lib/models/component-model";

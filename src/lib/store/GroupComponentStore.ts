@@ -1,4 +1,4 @@
-import { computed, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { BaseComponentModel } from "../models/component-model";
 import { AtomicComponentState } from "./AtomicComponentStore";
 import { BaseComponentStore } from "./BaseComponentStore";
@@ -17,8 +17,9 @@ export class GroupComponentState extends BaseComponentStore {
 
     makeObservable(this, {
       children: observable,
-      error: computed,
       isDirty: computed,
+
+      error: computed,
     });
 
     this.children = data.children;
@@ -31,5 +32,11 @@ export class GroupComponentState extends BaseComponentStore {
 
   get isDirty(): boolean {
     return this.children.some((c) => c.isDirty);
+  }
+
+  setDirty() {
+    this.children.forEach((f) => {
+      f.setDirty();
+    });
   }
 }

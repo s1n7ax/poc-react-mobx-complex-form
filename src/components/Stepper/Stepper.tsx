@@ -1,11 +1,11 @@
-import { GroupComponentState } from "@/lib/store/GroupComponentStore";
+import { StepperComponentState } from "@/lib/store/StepperComponentStore";
 import { observer } from "mobx-react-lite";
 import StepperBody from "./StepperBody";
 import StepperButtons from "./StepperButtons";
 import StepperHeader from "./StepperHeader";
 
 export interface StepperProps {
-  data: GroupComponentState;
+  data: StepperComponentState;
 }
 
 const Stepper = observer(({ data }: StepperProps) => {

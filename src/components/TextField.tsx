@@ -10,9 +10,11 @@ const TextField = observer(({ data }: TextFieldProps) => {
   console.log("rendering::TextField::", data.id);
   return (
     <MuiTextField
+      value={data.formValue}
       sx={{
         display: data.isHidden ? "none" : "block",
       }}
+      fullWidth={true}
       error={data.isDirty && data.error.hasError}
       disabled={data.isDisabled}
       helperText={data.isDirty && data.error.message}

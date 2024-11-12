@@ -9,7 +9,12 @@ export interface SliderProps {
 }
 
 const Slider = observer(({ data }: SliderProps) => {
-  console.log("rendering::Slider");
+  console.log("rendering::Slider", data.id, data.value);
+  const initValue = useRef(data.formValue);
+  assert(
+    typeof data.value === "number",
+    "The value must be a number but passed::",
+  );
   assert(
     data.validations.min,
     "You must have minimum number validation for slider",
@@ -21,7 +26,6 @@ const Slider = observer(({ data }: SliderProps) => {
   );
 
   const max = data.validations.max.value;
-  const initialValue = useRef<number>(data.value as number);
 
   return (
     <FormGroup
@@ -37,7 +41,7 @@ const Slider = observer(({ data }: SliderProps) => {
       </FormLabel>
       <MuiSlider
         aria-label={data.label}
-        defaultValue={initialValue.current}
+        defaultValue={initValue.current as number}
         color={data.isDirty && data.error.hasError ? "error" : "primary"}
         onChange={(_, value) => data.changeValue(value as number)}
         marks={getMarks(max)}

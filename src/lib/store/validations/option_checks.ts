@@ -20,7 +20,7 @@ export const isOptionalPropEnabled = (
 };
 
 const predicate = (rule: Condition) => {
-  const watchedData = watchedFormData.fields[rule.id];
+  const watchedData = watchedFormData.watchedFields[rule.id];
   if (!watchedData) return false;
 
   const check = constraintFactory(rule.constraint);

@@ -48,7 +48,9 @@ export class AtomicComponentState extends BaseComponentStore {
       error: computed,
       isDisabled: computed,
       isHidden: computed,
+
       changeValue: action,
+      setDirty: action,
     });
 
     this.value = data.value;
@@ -66,10 +68,10 @@ export class AtomicComponentState extends BaseComponentStore {
 
   get error(): ErrorModel {
     if (this.cmpType === ComponentType.TextField)
-      return strVal(this.value as string, this.validations);
+      return strVal(this.formValue as string, this.validations);
 
     if (this.cmpType === ComponentType.Slider)
-      return numVal(this.value as number, this.validations);
+      return numVal(this.formValue as number, this.validations);
 
     return { hasError: true, message: "initial error" };
   }
@@ -83,7 +85,7 @@ export class AtomicComponentState extends BaseComponentStore {
   }
 
   changeValue(value: ValueType) {
-    this.value = value;
+    this.formValue = value;
     this.isDirty = true;
     if (this.isWatched) {
       watchedFormData.setValue(
@@ -94,5 +96,9 @@ export class AtomicComponentState extends BaseComponentStore {
         value,
       );
     }
+  }
+
+  setDirty() {
+    this.isDirty = true;
   }
 }

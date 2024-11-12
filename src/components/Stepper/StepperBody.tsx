@@ -1,21 +1,22 @@
 import { GroupComponentState } from "@/lib/store/GroupComponentStore";
 import GenericComponentList from "../GenericComponentList";
+import { StepperProps } from "./Stepper";
+import { observer } from "mobx-react-lite";
 
-export interface StepperBodyProps {
-  data: GroupComponentState;
-}
-
-export default function StepperBody({ data }: StepperBodyProps) {
+const StepperBody = observer(({ data }: StepperProps) => {
   return (
     <div
       style={{
         display: "grid",
-        gridTemplate: "'1fr 1fr'",
-        gridAutoFlow: "row",
+        gridTemplateColumns: "1fr 1fr",
         gap: "1rem",
       }}
     >
-      <GenericComponentList data={data.children[0] as GroupComponentState} />
+      <GenericComponentList
+        data={data.children[data.activeStep] as GroupComponentState}
+      />
     </div>
   );
-}
+});
+
+export default StepperBody;

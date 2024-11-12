@@ -5,17 +5,18 @@ type FieldData = { id: number; cmpType: ComponentType };
 type StoredFieldData = { id: number; cmpType: ComponentType; value: ValueType };
 
 export class WatchedFormDataStore {
-  fields: Record<number, StoredFieldData> = {};
+  watchedFields: Record<number, StoredFieldData> = {};
+  forceValidation = false;
 
   constructor() {
     makeObservable(this, {
-      fields: observable,
+      watchedFields: observable,
       setValue: action,
     });
   }
 
   setValue(field: FieldData, value: ValueType) {
-    this.fields[field.id] = {
+    this.watchedFields[field.id] = {
       id: field.id,
       cmpType: field.cmpType,
       value: value,
