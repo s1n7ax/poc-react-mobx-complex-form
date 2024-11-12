@@ -1,29 +1,43 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { StepperProps } from "./Stepper";
+import { useFormStatus } from "react-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const StepperButtons = observer(({ data }: StepperProps) => {
+  const { pending } = useFormStatus();
+
   return (
-    <div>
+    <Box
+      sx={{
+        display: "grid",
+        gridAutoFlow: "column",
+        gap: "1rem",
+      }}
+    >
       <Button
         onClick={() => data.prev()}
-        disabled={!data.hasPrev}
+        disabled={!data.hasPrev || pending}
         variant="outlined"
       >
         Back
       </Button>
-      <Button
+      <LoadingButton
+        variant="outlined"
         type={data.hasNext ? "button" : "submit"}
+        loading={pending}
         onClick={(ev) => {
-          ev.preventDefault();
           data.next();
+
+          if (data.error.hasError) {
+            ev.preventDefault();
+          }
         }}
         disabled={data.isNextDisabled}
-        variant="outlined"
       >
         {data.hasNext ? "Next" : "Submit"}
-      </Button>
-    </div>
+      </LoadingButton>
+    </Box>
   );
 });
 

@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 import { BaseComponentModel } from "../models/component-model";
 import { AtomicComponentState } from "./AtomicComponentStore";
 import { BaseComponentStore } from "./BaseComponentStore";

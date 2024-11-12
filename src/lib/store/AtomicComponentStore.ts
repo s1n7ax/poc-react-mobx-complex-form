@@ -1,3 +1,4 @@
+import { watchedFormData } from "@/components/Form";
 import {
   BaseComponentModel,
   ComponentType,
@@ -8,7 +9,6 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { BaseComponentStore } from "./BaseComponentStore";
 import { numVal, strVal } from "./validations/field_validations";
 import { isOptionalPropEnabled } from "./validations/option_checks";
-import { watchedFormData } from "@/components/FormBuilder";
 
 export interface ComponentValidationsStateModel
   extends ComponentValidationsModel {

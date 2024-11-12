@@ -14,7 +14,7 @@ const FieldGroup = observer(({ data }: FormGroupProps) => {
       style={{
         display: "grid",
         gap: "1rem",
-        borderColor: data.isDirty && data.hasError ? "red" : "orange",
+        borderColor: data.isDirty && data.error.hasError ? "red" : "orange",
         borderWidth: "2px",
         padding: "10px",
       }}
